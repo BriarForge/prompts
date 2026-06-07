@@ -19,11 +19,17 @@ Run `git-<person> whoami` to confirm before pushing.
 
 Inherited from `/Users/mike/Projects/BriarForge/AGENTS.md`. When this file and the parent conflict, the parent wins until this file is updated to match.
 
+## Security Rules (mandatory for public repo)
+
+- Never commit or push real secrets, tokens, API keys, passwords, or private keys.
+- File paths such as `/Users/mike/*`, `/Users/mike/.hermes/*`, or similar local paths are considered low-risk and acceptable.
+- If any prompt or note contains potentially sensitive values, redact them before saving.
+
 ## Prompt saving workflow
 
 When the user asks to "save a prompt" (or equivalent phrasing such as "store this prompt", "save this as a recurring prompt", "add this prompt to the library"):
 
-1. Create a new Markdown file at the repo root using `<kebab-case-name>.md`.
+1. Create a new Markdown file inside the appropriate category subfolder (e.g. `coding/`, `team-config/`) using `<kebab-case-name>.md`.
 2. The filename should be a concise kebab-case version of the prompt's purpose or title.
 3. File contents should be a clean, self-contained Markdown document containing:
    - A level-1 heading with the prompt title
