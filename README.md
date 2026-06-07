@@ -8,8 +8,9 @@ Store reusable, high-value prompts in a structured, version-controlled Markdown 
 
 ## Structure
 
-- One `.md` file per prompt at the repo root
-- Each file uses kebab-case naming (e.g. `financial-report-roast.md`)
+- Prompts are organized in subfolders by category (e.g. `coding/`, `team-config/`)
+- One `.md` file per prompt inside the appropriate subfolder
+- Each file uses kebab-case naming (e.g. `feature-systems-thinking.md`)
 - Files contain the prompt plus optional metadata and usage guidance
 
 ## Adding a prompt
