@@ -34,8 +34,8 @@ When the user asks to "save a prompt" (or equivalent phrasing such as "store thi
 3. File contents should be a clean, self-contained Markdown document containing:
    - A level-1 heading with the prompt title
    - Optional YAML frontmatter for `tags`, `category`, `last-used`, `version`
-   - The full prompt text in a fenced code block or as the main body
-   - Optional "Usage notes" or "Examples" section
+   - The reusable prompt wrapped in a fenced code block (```text or ```markdown) for easy copy-paste
+   - Optional "# Notes" section after the code block
 4. Do not overwrite existing files unless the user explicitly requests an update.
 5. After creating the file, stage and commit using the correct wrapper (`git-aoife commit -m "prompt: add <name>"` or similar) and push.
 6. Report the created file path and commit summary back to the user.

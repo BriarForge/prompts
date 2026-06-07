@@ -1,11 +1,12 @@
 ---
 tags: [cron, skills, migration, architecture]
-category: coding
+category: architecture
 version: 1
 ---
 
 # Migrate cronjobs to skill-first architecture
 
+```text
 You are migrating your cronjobs to a skill-first architecture.
 
 Goal: Every cronjob must load one or more skills. No raw scripts or `no_agent=true` jobs allowed.
@@ -22,6 +23,7 @@ Steps:
 5. After each migration, verify the job definition no longer references raw scripts.
 
 Output: list of migrated job_ids + skill names. Ask for decisions only on ambiguous cases.
+```
 
 # Notes
 - Generalize the skills directory path as needed for the target environment.
