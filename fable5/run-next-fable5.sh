@@ -24,6 +24,10 @@ echo "[$(date)] Starting next Fable 5 prompt: $NEXT_PROMPT" | tee -a "$RUNNER_LO
 # Mark as running; record start epoch for the safety-net race fix below.
 RUN_START_EPOCH=$(date +%s)
 RUN_START_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+# Portable find timestamp — `-newermt "@<epoch>"` is GNU-only and silently exits 1
+# on macOS/BSD find, killing the runner right after claude-auto returns. Use the
+# ISO form which both GNU and BSD find parse via getdate(3).
+RUN_START_FIND_TS=$(date -r "$RUN_START_EPOCH" "+%Y-%m-%d %H:%M:%S")
 jq --arg file "$NEXT_PROMPT" \
    --arg time "$RUN_START_ISO" \
    '.prompts = (.prompts | map(if .file == $file then .status = "running" | .last_run = $time else . end))' \
@@ -93,7 +97,7 @@ if [ -d "$SKILLS_DIR" ]; then
   sleep 5  # initial settle
   for attempt in 1 2 3 4 5 6; do
     CHANGES=$(git "${SKILLS_GIT_FLAGS[@]}" status --porcelain 2>/dev/null)
-    LATE_WRITES=$(find "$SKILLS_DIR" -name "*.md" -newermt "@$RUN_START_EPOCH" -not -path "*/.git/*" 2>/dev/null)
+    LATE_WRITES=$(find "$SKILLS_DIR" -name "*.md" -newermt "$RUN_START_FIND_TS" -not -path "*/.git/*" 2>/dev/null)
     if [ -z "$LATE_WRITES" ] && [ -z "$CHANGES" ]; then
       echo "[$(date)] Skills repo clean (attempt $attempt) — nothing to commit" | tee -a "$RUNNER_LOG"
       break
