@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-11T18:46:03Z",
+  "last_updated": "2026-06-11T20:11:48Z",
   "current_index": 0,
   "prompts": [
     {
@@ -25,10 +25,10 @@
     },
     {
       "file": "leverage-point-mapping.md",
-      "status": "pending",
-      "last_run": null,
-      "session_id": null,
-      "notes": ""
+      "status": "done",
+      "last_run": "2026-06-11T20:11:48Z",
+      "session_id": "89218505-d198-41ec-8ae0-1213f383b141",
+      "notes": "reconciled by Vladislava 2026-06-12 04:12 AWST: claude-auto succeeded (is_error=false, 5.8m, duration_ms=348885), leverage-map committed+pushed to BriarForge/prompts (commits 8934896, 6e692de), but runner exited non-zero before the mark-as-done jq step"
     },
     {
       "file": "openclaw-doctor-resilience-autonomy.md",
