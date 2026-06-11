@@ -47,9 +47,9 @@
     {
       "file": "xerahs-pipeline-reliability-autonomy.md",
       "status": "pending",
-      "last_run": "2026-06-11T12:38:38Z",
+      "last_run": "2026-06-11T12:39:51Z",
       "session_id": null,
-      "notes": "failed: claude-auto invocation failed (timeout or non-zero exit)"
+      "notes": "failed: claude-auto exit=1: Not logged in · Please run /login"
     },
     {
       "file": "zero-zombie-initiative-os.md",

@@ -23,3 +23,7 @@ timeout: failed to run command ‘claude-auto’: No such file or directory
 {"type":"result","subtype":"error","is_error":true,"result":"claude-auto invocation failed (timeout or non-zero exit)"}
 [Thu Jun 11 20:38:38 AWST 2026] FAILED: claude-auto did not return a successful result for xerahs-pipeline-reliability-autonomy.md
 [Thu Jun 11 20:38:38 AWST 2026]   reason: claude-auto invocation failed (timeout or non-zero exit)
+[Thu Jun 11 20:39:50 AWST 2026] Starting next Fable 5 prompt: xerahs-pipeline-reliability-autonomy.md
+{"type":"result","subtype":"success","is_error":true,"api_error_status":null,"duration_ms":77,"duration_api_ms":0,"num_turns":1,"result":"Not logged in · Please run /login","stop_reason":"stop_sequence","session_id":"4ac9db6b-2a2f-4f9c-b2bc-44467874c09f","total_cost_usd":0,"usage":{"input_tokens":0,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"output_tokens":0,"server_tool_use":{"web_search_requests":0,"web_fetch_requests":0},"service_tier":"standard","cache_creation":{"ephemeral_1h_input_tokens":0,"ephemeral_5m_input_tokens":0},"inference_geo":"","iterations":[],"speed":"standard"},"modelUsage":{},"permission_denials":[],"terminal_reason":"completed","fast_mode_state":"off","uuid":"5096f6ad-fca7-468e-bbeb-406287cc1a04"}
+[Thu Jun 11 20:39:51 AWST 2026] FAILED: claude-auto did not return a successful result for xerahs-pipeline-reliability-autonomy.md
+[Thu Jun 11 20:39:51 AWST 2026]   reason: claude-auto exit=1: Not logged in · Please run /login
