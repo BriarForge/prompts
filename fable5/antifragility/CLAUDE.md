@@ -37,6 +37,10 @@ top-5 fragility sources (F1–F5), ranked interventions, executed simulations.
 When one lands: flip status, rerun the relevant §2 query, record the metric
 delta here.
 
+2026-06-12: F1–F5 absorbed into the 90-day plan in
+`fable5/leverage-map/LEVERAGE-MAP.md` (L1=F5+F4c, L2=F1+KovaForge P1–P5,
+L3=F2+F4a/b, L4=F3+F4d). Track rollout there; record metric deltas here.
+
 ## Operating rules for this workstream
 
 1. Every new incident must name its fragility class (F1–F5 or a new F6+) and
