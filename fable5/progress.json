@@ -1,12 +1,12 @@
 {
-  "last_updated": "2026-06-11T12:50:49Z",
+  "last_updated": "2026-06-11T12:51:03Z",
   "current_index": 0,
   "prompts": [
     {
       "file": "skills-repo-overarching-review.md",
-      "status": "pending",
-      "last_run": null,
-      "session_id": null,
+      "status": "done",
+      "last_run": "2026-06-11T12:51:03Z",
+      "session_id": "e2486379-3fe7-4055-af04-c43d6f436df9",
       "notes": "requeued: previous attempt was killed by session timeout (SIGKILL); need nohup detachment"
     },
     {
