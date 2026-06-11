@@ -38,11 +38,15 @@ blocks. Files:
 - `run-next-fable5.sh` runs pending prompts via claude-auto, 4.5h timeout,
   success-gated on JSON `is_error`, reverts to pending on failure.
 - `progress.json` is owned by the runner — goal runs should not edit it.
-- Remaining pending prompts (as of 2026-06-11) that would benefit from
+- Remaining pending prompts (as of 2026-06-12) that would benefit from
   retranslation through this layer before they run:
-  `ecosystem-antifragility-audit.md`, `leverage-point-mapping.md`,
+  `leverage-point-mapping.md` (extracts to only 8 lines — thinnest contract),
   `openclaw-doctor-resilience-autonomy.md`, `skill-evolution-maintenance-loop.md`,
-  `zero-zombie-initiative-os.md`. (xerahs one already repaired 2026-06-11.)
+  `zero-zombie-initiative-os.md`. (xerahs repaired 2026-06-11;
+  ecosystem-antifragility-audit ran un-retranslated 2026-06-12 — it had to
+  invent its output path, confirming rule 4. Its F5 intervention proposes
+  moving the Phase-6 extraction lint into the runner itself; see
+  `fable5/antifragility/ASSESSMENT.md`.)
 
 ## Open questions / next iterations
 
