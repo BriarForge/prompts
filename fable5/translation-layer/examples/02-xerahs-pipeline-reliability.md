@@ -1,7 +1,25 @@
-# XerahS Pipeline Reliability & Autonomy
+# Example 2 — XerahS Pipeline Reliability & Autonomy
 
-**Category:** operations  
-**Tags:** [xerahs, pipeline, automation, release, hermes-prime]
+**Source:** `fable5/xerahs-pipeline-reliability-autonomy.md` (queued, pending).
+This one is the cautionary tale: the file was **structurally broken** before this
+translation.
+
+## Defects found in the original (2026-06-11)
+
+1. **Early-closing fence.** Line 26 began with ``` glued to prose, so the
+   runner's extraction (`sed -n '/```text/,/```/p' | sed '1d;$d'`) would cut the
+   prompt at line 25 — silently dropping the real "Done looks like" and the
+   entire Verification section. Fable would have run on a truncated goal.
+2. **Two conflicting "Done looks like" sections** — a condensed paste-over left
+   both the stub ("Prioritized upgrades with ownership and verification") and
+   the full original.
+3. **Placeholder grounding:** "Core skills: (listed in original)". Rubric 2: 0/2.
+4. Adjective done: "significantly more antifragile" — unfalsifiable.
+
+Original rubric score: **6/14 with a zero → not Fable-ready**, and the fence bug
+made even that optimistic.
+
+## Fable-ready translation
 
 ```text
 Fable 5 one-shot mode (high effort, long-run scaffolding + git workflow enabled):
@@ -48,9 +66,7 @@ Verification:
 - Item 2 → coverage check: 4/4 workflows appear in the table.
 - Item 3 → walk each scenario step-by-step against the upgraded design; the
   walk must end in "recovered" or "failed safely + diagnostic emitted".
-- End with rubric self-score per
-  /Users/mike/Projects/BriarForge/prompts/fable5/translation-layer/RUBRIC.md
-  with evidence.
+- End with rubric self-score per RUBRIC.md with evidence.
 
 If blocked:
 - A skill's SKILL.md contradicts the xerahs repo's actual behavior → trust the
@@ -59,10 +75,19 @@ If blocked:
   "hypothesized" so the plan separates evidence from speculation.
 ```
 
-## Notes
-- Treat XerahS as a critical production system, not just a utility.
-- Prioritize durability and observability over adding new features.
-- 2026-06-11: file was structurally broken (early-closing fence truncated the
-  prompt at extraction; duplicate Done sections; placeholder skill list).
-  Replaced with the validated translation from
-  `translation-layer/examples/02-xerahs-pipeline-reliability.md`.
+## Validation
+
+Rubric: 1: **2** (named artifact at a path). 2: **2** (repo + all five skills
+verified by `ls` on 2026-06-11; placeholder eliminated). 3: **2** (four binary
+items; "antifragile" adjective replaced by field/coverage/scenario checks).
+4: **2** (presence, coverage, and scenario-walk checks are executable). 5: **2**
+(plan-only run; credential/pipeline exclusions; sign-off list). 6: **2**.
+7: **2** (doc-drift and no-history fallbacks). **Total: 14/14 — Fable-ready.**
+
+Simulated-question test: "Which five skills?" (grounded), "Do I implement or
+just plan?" (Scope: In/Out), "Where does the plan live?" (Objective), "What if
+docs and code disagree?" (If blocked) — all answered in-block.
+
+**Queue file repaired:** the broken original was replaced in place with this
+translation (single well-formed fence, one Done section), and the extraction
+dry-run now returns the full prompt. See commit history.
