@@ -1,0 +1,62 @@
+{
+  "last_updated": "2026-06-11T12:06:58Z",
+  "current_index": 0,
+  "prompts": [
+    {
+      "file": "skills-repo-overarching-review.md",
+      "status": "done",
+      "last_run": "2026-06-11T12:06:58Z",
+      "session_id": "unknown",
+      "notes": ""
+    },
+    {
+      "file": "objective-to-execution-translation.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    },
+    {
+      "file": "ecosystem-antifragility-audit.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    },
+    {
+      "file": "leverage-point-mapping.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    },
+    {
+      "file": "openclaw-doctor-resilience-autonomy.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    },
+    {
+      "file": "skill-evolution-maintenance-loop.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    },
+    {
+      "file": "xerahs-pipeline-reliability-autonomy.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    },
+    {
+      "file": "zero-zombie-initiative-os.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
+    }
+  ]
+}
