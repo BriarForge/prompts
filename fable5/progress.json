@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-11T12:45:59Z",
+  "last_updated": "2026-06-11T12:50:49Z",
   "current_index": 0,
   "prompts": [
     {
@@ -7,7 +7,7 @@
       "status": "pending",
       "last_run": null,
       "session_id": null,
-      "notes": ""
+      "notes": "requeued: previous attempt was killed by session timeout (SIGKILL); need nohup detachment"
     },
     {
       "file": "objective-to-execution-translation.md",

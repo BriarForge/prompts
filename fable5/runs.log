@@ -1,1 +1,4 @@
 [2026-06-11T12:46:10Z] Clean reset of progress.json — auth is live, pipeline end-to-end verified (smoke test session 69636277-defe-4039-8180-0688e9449544 returned PONG via claude-fable-5, /bin/zsh.15). Ready to start real queue from top.
+[Thu Jun 11 20:46:27 AWST 2026] Starting next Fable 5 prompt: skills-repo-overarching-review.md
+[Thu Jun 11 20:46:27 AWST 2026] Starting next Fable 5 prompt: skills-repo-overarching-review.md
+[2026-06-11T12:50:49Z] Killed previous run via SIGKILL from session timeout. Requeueing with nohup.
