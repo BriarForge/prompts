@@ -33,9 +33,9 @@
     {
       "file": "openclaw-doctor-resilience-autonomy.md",
       "status": "pending",
-      "last_run": null,
+      "last_run": "2026-06-11T20:30:16Z",
       "session_id": null,
-      "notes": ""
+      "notes": "failed: claude-auto exit=1: You've hit your session limit · resets 7:40am (Australia/Perth)"
     },
     {
       "file": "skill-evolution-maintenance-loop.md",
