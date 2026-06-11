@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-11T13:35:52Z",
+  "last_updated": "2026-06-11T18:46:03Z",
   "current_index": 0,
   "prompts": [
     {
@@ -18,10 +18,10 @@
     },
     {
       "file": "ecosystem-antifragility-audit.md",
-      "status": "pending",
-      "last_run": null,
-      "session_id": null,
-      "notes": ""
+      "status": "done",
+      "last_run": "2026-06-11T18:46:03Z",
+      "session_id": "38c06fb8-448e-49e0-a649-5568a02eb7ff",
+      "notes": "reconciled by Vladislava 2026-06-12 04:05 AWST: claude-auto succeeded (is_error=false, ~7.6m), deliverables committed+pushed to BriarForge/prompts, but runner was killed before the 'mark as done' jq step"
     },
     {
       "file": "leverage-point-mapping.md",
