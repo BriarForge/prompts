@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-11T12:10:17Z",
+  "last_updated": "2026-06-11T12:10:32Z",
   "current_index": 0,
   "prompts": [
     {
@@ -25,9 +25,9 @@
     },
     {
       "file": "leverage-point-mapping.md",
-      "status": "pending",
-      "last_run": null,
-      "session_id": null,
+      "status": "done",
+      "last_run": "2026-06-11T12:10:32Z",
+      "session_id": "fable5-20260611-201032-leverage-point-mapping",
       "notes": ""
     },
     {
