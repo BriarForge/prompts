@@ -1,55 +1,55 @@
 {
-  "last_updated": "2026-06-11T12:28:15Z",
+  "last_updated": "2026-06-11T12:40:45Z",
   "current_index": 0,
   "prompts": [
     {
       "file": "skills-repo-overarching-review.md",
-      "status": "done",
-      "last_run": "2026-06-11T12:06:58Z",
-      "session_id": "unknown",
-      "notes": ""
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "requeued: previous run never actually invoked claude (binary missing)"
     },
     {
       "file": "objective-to-execution-translation.md",
-      "status": "done",
-      "last_run": "2026-06-11T12:09:56Z",
-      "session_id": "unknown",
-      "notes": ""
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "requeued: previous run never actually invoked claude (binary missing)"
     },
     {
       "file": "ecosystem-antifragility-audit.md",
-      "status": "done",
-      "last_run": "2026-06-11T12:10:17Z",
-      "session_id": "unknown",
-      "notes": ""
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "requeued: previous run never actually invoked claude (binary missing)"
     },
     {
       "file": "leverage-point-mapping.md",
-      "status": "done",
-      "last_run": "2026-06-11T12:10:32Z",
-      "session_id": "fable5-20260611-201032-leverage-point-mapping",
-      "notes": ""
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "requeued: previous run never actually invoked claude (binary missing)"
     },
     {
       "file": "openclaw-doctor-resilience-autonomy.md",
-      "status": "done",
-      "last_run": "2026-06-11T12:27:29Z",
-      "session_id": "fable5-20260611-202725-openclaw-doctor-resilience-autonomy",
-      "notes": ""
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "requeued: previous run never actually invoked claude (binary missing)"
     },
     {
       "file": "skill-evolution-maintenance-loop.md",
-      "status": "done",
-      "last_run": "2026-06-11T12:28:15Z",
-      "session_id": "fable5-20260611-202815-skill-evolution-maintenance-loop",
-      "notes": ""
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "requeued: previous run never actually invoked claude (binary missing)"
     },
     {
       "file": "xerahs-pipeline-reliability-autonomy.md",
       "status": "pending",
       "last_run": "2026-06-11T12:39:51Z",
       "session_id": null,
-      "notes": "failed: claude-auto exit=1: Not logged in · Please run /login"
+      "notes": "failed: claude-auto exit=1: Not logged in \u00b7 Please run /login"
     },
     {
       "file": "zero-zombie-initiative-os.md",
