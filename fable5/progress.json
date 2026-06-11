@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-11T12:42:35Z",
+  "last_updated": "2026-06-11T12:45:59Z",
   "current_index": 0,
   "prompts": [
     {
@@ -7,49 +7,49 @@
       "status": "pending",
       "last_run": null,
       "session_id": null,
-      "notes": "requeued: previous run never actually invoked claude (binary missing)"
+      "notes": ""
     },
     {
       "file": "objective-to-execution-translation.md",
       "status": "pending",
       "last_run": null,
       "session_id": null,
-      "notes": "requeued: previous run never actually invoked claude (binary missing)"
+      "notes": ""
     },
     {
       "file": "ecosystem-antifragility-audit.md",
       "status": "pending",
       "last_run": null,
       "session_id": null,
-      "notes": "requeued: previous run never actually invoked claude (binary missing)"
+      "notes": ""
     },
     {
       "file": "leverage-point-mapping.md",
       "status": "pending",
       "last_run": null,
       "session_id": null,
-      "notes": "requeued: previous run never actually invoked claude (binary missing)"
+      "notes": ""
     },
     {
       "file": "openclaw-doctor-resilience-autonomy.md",
       "status": "pending",
       "last_run": null,
       "session_id": null,
-      "notes": "requeued: previous run never actually invoked claude (binary missing)"
+      "notes": ""
     },
     {
       "file": "skill-evolution-maintenance-loop.md",
       "status": "pending",
-      "last_run": "2026-06-11T12:42:35Z",
-      "session_id": "5722f331-6c17-480b-bc2f-953c0d63c973",
-      "notes": "failed: claude-auto exit=1: Not logged in \u00b7 Please run /login"
+      "last_run": null,
+      "session_id": null,
+      "notes": ""
     },
     {
       "file": "xerahs-pipeline-reliability-autonomy.md",
       "status": "pending",
-      "last_run": "2026-06-11T12:39:51Z",
+      "last_run": null,
       "session_id": null,
-      "notes": "failed: claude-auto exit=1: Not logged in \u00b7 Please run /login"
+      "notes": ""
     },
     {
       "file": "zero-zombie-initiative-os.md",
