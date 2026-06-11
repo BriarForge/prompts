@@ -9,3 +9,7 @@ timeout: failed to run command ‘claude-auto’: No such file or directory
 [Thu Jun 11 20:10:21 AWST 2026] Completed: ecosystem-antifragility-audit.md
 [Thu Jun 11 20:10:32 AWST 2026] Starting next Fable 5 prompt: leverage-point-mapping.md
 timeout: failed to run command ‘claude-auto’: No such file or directory
+[Thu Jun 11 20:10:35 AWST 2026] Completed: leverage-point-mapping.md
+[Thu Jun 11 20:27:25 AWST 2026] Starting next Fable 5 prompt: openclaw-doctor-resilience-autonomy.md
+timeout: failed to run command ‘claude-auto’: No such file or directory
+[Thu Jun 11 20:27:25 AWST 2026] Changes detected in skills repo — committing with git-aoife
