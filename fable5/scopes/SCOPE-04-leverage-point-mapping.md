@@ -1,103 +1,128 @@
-# Scope — F5: Leverage-Point Mapping for Next Quarter
+# Scope 04 — Execute the 30/60/90 Lever Plan (L1–L4)
 
-**Fable 5 prompt:** `leverage-point-mapping.md` (4th in queue, 2026-06-11)
-**Session id:** `89218505-d198-41ec-8ae0-1213f383b141`
-**Output:** `/Users/mike/Projects/BriarForge/prompts/fable5/leverage-map/LEVERAGE-MAP.md` (347 lines, 19 KiB)
-**Commits:** `8934896`, `6e692de` (cross-link to antifragility F1-F5)
+**Drives from:** `fable5/leverage-map/LEVERAGE-MAP.md` (4 leverage
+points L1–L4 with before/after metrics, dependency map, 30/60/90
+rollout). Baseline: ≥5 steering events / 48h on the autonomous
+pipeline. Target: ≤1 steering event / 30d at day 90.
+**Goal:** Land L1–L4 sequentially and reduce steering events
+measurably.
+**Owner of this scope:** Per-leverage owners below.
 
----
+## Steps
 
-## What was asked
+### Days 0–30 — close the live leaks, everything report-only
 
-"Map the highest-leverage intervention points across active strategic
-threads" using KovaForge skills, Aoife skills, protocols, the antifragility
-baseline, and the queue state — with the goal of reducing future user
-steering and increasing autonomous execution quality over 90 days.
+**L1 (Aoife, 1 day) — Validated goal contract at the execution seam**
+- Runner lint + auth preflight + retranslate 4 pre-rubric prompts.
+- This scope IS Scope 02 steps 2–4. Implement once, track here.
+- **Day-30 metric:** pre-rubric prompts 4/8 → 0; truncated/half-
+  executed goals structurally impossible; runs forced to guess
+  output path 2-of-last-3 → 0.
 
-## What it produced
+**L2 (Aoife + Declan, 1.5 days) — One source of truth for capability knowledge**
+- Hermes resolution-precedence read (precondition for registry
+  semantics; this is Scope 02 step 1).
+- `validate-ecosystem.py` in report-only mode (Scope 03 F1 phase 1).
+- 4 YAML fixes + merge the 2 contradictory pairs (bitwarden,
+  delegation — Scope 01 P2/P3).
+- **Day-30 metric:** cron skill refs resolving nowhere 2→0 (held by
+  weekly lint); contradictory duplicate pairs 2→0.
 
-- A precise definition of **"steering event"** = any time a human
-  (Mike, or a reconciling agent) must intervene in work the system was
-  supposed to do alone: repairing a goal, requeueing a run, reconciling
-  state, noticing a failure, correcting an agent that followed wrong
-  guidance. **Measured baseline: ≥5 steering events in the last 48h**
-  (verified one-by-one in the document).
-- **4 ranked leverage points** (L1-L4), each with before/after metrics,
-  dependency map, 30/60/90 rollout:
-  - **L1** Validated goal contract — apply the translation-layer rubric
-    *as a gate* to every Fable 5 prompt before queueing. Target: 0
-    pre-rubric prompts in the queue by day 30.
-  - **L2** One source of truth for capability knowledge — make the
-    ecosystem resolution registry (F3 F1 upgrade) the only place an
-    agent looks up a skill. Target: 39→0 dangling refs and 5→0
-    contradictory duplicates by day 60.
-  - **L3** Closed-loop failure handling — build the cron health sentinel
-    (F3 F2 upgrade) and integrate with the Anti-Zombie Protocol. Target:
-    mean-time-to-detect from unbounded to <24h by day 45.
-  - **L4** Mechanical incident→control metabolism — every incident class
-    observed once becomes mechanically impossible to repeat unnoticed
-    (the F1 validate-skills linter applied to all 5 skills roots).
-    Target: by day 90, every new incident in the prior 30 days
-    corresponds to a control that fired.
-- Observation: the **4 remaining pending prompts** in the queue
-  (openclaw-doctor, skill-sustainer, xerahs, zero-zombie) *each map
-  to a slice of this map* — so executing the queue IS executing
-  L1-L4 by construction, and their thin extractions will produce
-  lower leverage than re-translating them first.
+**L3 phase 1 (Declan, 1 day) — Closed-loop failure handling**
+- Cron health sentinel digest live to one ops channel
+  (Scope 03 F2 phase 1).
+- Fix both live zombies (PureMac, SpaceX) + PureMac delivery
+  misroute.
+- Skills sync weekly→daily (Scope 03 F4 b).
+- Backup manifest check live (Scope 03 F4 a).
+- **Day-30 metric:** MTTD for failing cron job ∞ → <24h; live
+  zombie jobs 2→0; machine-local unpushed skill work 7d→1d.
 
-## Scope for follow-up action
+**L4 (Aoife + Viktor, ~1 day in days 0–30) — Mechanical
+incident→control metabolism, start**
+- Incident log file at `fable5/antifragility/INCIDENTS.md` (one row
+  per incident, fragility class F1–F6+, resulting check or written
+  waiver).
+- `BRF-OPS-POL-003` pair merged, survivor indexed.
+- Protocol integrity lint running report-only (Scope 03 F3).
+- **Day-30 metric:** incident→control conversion ad-hoc → mechanical;
+  duplicate protocol IDs 1→0; policies with automated checks 0/8
+  (start, target 4/8 by day 90).
 
-**In scope (the map covers):**
-- The Fable 5 prompt queue, the translation layer, the skills repo
-  (all 5 resolution roots), the cron store, the antifragility
-  assessment F1-F5.
-- 90-day horizon from 2026-06-12.
-- The cross-Fable-5 cross-link table: which Fable 5 outputs address
-  which leverage point.
+### Gate to day-31
+- 2 weeks of L3 digest accuracy.
+- L2 lint FP rate measured.
+- L1 runner lint never blocked a human-judged-well-formed prompt.
 
-**Out of scope:**
-- Beyond-90-day strategic work (this is a quarter plan, not annual).
-- The 4 pending prompts' *content* (they get re-translated or run
-  as-is, not redrafted).
-- Direct CEO/people decisions (L1-L4 all operate at the system
-  level, not the headcount level).
+### Days 31–60 — promote to blocking, finish unification
 
-**Decide alone:** the L1 gate mechanism (cron-blocked vs
-advisory); the L2 registry's canonical name (likely
-`validate-ecosystem.py` per the F3 plan); the L3 sentinel's
-delivery channel; the L4 "mechanically impossible to repeat"
-ratchet metric (likely "lint failures per commit" on the skills
-repo).
+**L2 (Declan, 0.5 day) — promote to blocking**
+- Pre-commit + CI + schedule-time gate blocking (if FP <5%).
+- Remaining 3 duplicate-pair merges (Scope 01 P3).
+- `vladislava-` ref fix (Scope 01 P2).
+- Tag-schema migration + AGENTS.md update (Scope 01 P4).
+- **Day-60 metric:** KovaForge repo rubric 4.3/10 → ≈7/10.
 
-**Don't decide alone:** the order of L1-L4 (the map ranks them
-L1<L2<L3<L4 by leverage, but execution order is a Mike call —
-L4 is highest-leverage but highest-effort); whether to
-retro-translate the 4 thin prompts before running them
-(costs 1 Fable 5 window per prompt to re-translate); the
-90-day horizon extension to 6 months if any L* slips.
+**L3 phase 2 (Declan, 0.5 day) — auto-pause**
+- N≥5 consecutive failures → auto-pause with `paused_reason`.
+- Resolver-backed ref checks in sentinel (uses L2's resolver).
+- **Day-60 metric:** zero zombie recurrence; MTTD stays <24h.
 
-## What the deliverables made possible
+**L4 (Aoife, 0.5 day) — first 2 policy checks**
+- Git Policy wrapper check (already partially enforced by
+  `git-aoife`/`git-mikhail` etc.; formalize the check).
+- Secrets Policy scan (currently in the pre-commit layer in some
+  repos; ship the lint).
+- Weekly Aoife self-audit cron live (Hermes mirror of
+  `coo-self-audit`).
+- **Day-60 metric:** policies with automated checks 0/8 → 2/8;
+  self-improvement trigger in-session recall → scheduled weekly
+  (before user frustration).
 
-- **Direct absorption of F3** — the F1-F5 fragility sources from
-  the antifragility audit are explicitly addressed by L1-L4.
-- **The cron sentinel's design** — L3's "closed-loop failure
-  handling" inherits the F3 F2 owner (Declan) and rollback
-  criteria verbatim.
-- **A re-translation queue** — the document's observation about
-  the 4 thin prompts is now a known planning input for any
-  future Fable 5 run scheduling.
+### Days 61–90 — make it compound, then measure
 
-## Headline metric
+**L4 (Aoife + Viktor, 0.5 day) — policy-PR-ships-check rule + runbook**
+- Active rule: every policy PR ships a check or records why not.
+- 4/8 policies with automated checks.
+- `RECOVERY.md` fresh-machine restore runbook rehearsed once on
+  a clean environment.
+- **Day-90 metric:** machine-loss event bounded to measured restore
+  time; policies with automated checks 4/8.
 
-Steering events per 30d, baseline vs target:
-- **Baseline:** ≥5 per 48h = ~75 per 30d.
-- **Target after 90 days:** ≤1 per 30d (L1+L2+L3+L4 all landed).
-- **Stretch:** 0 (if L4's "mechanical impossibility" claim holds).
+**Final measurement pass (Aoife, ½ day)**
+- Re-run all deterministic queries from the leverage map and the
+  antifragility assessment.
+- **Day-90 metric:** steering events over trailing 30 days ≤1;
+  KovaForge rubric ≥7/10; system ≥7.0/10.
 
-## Current status
+## Verification
 
-**Complete and committed.** 4 leverage points ranked and cross-linked
-to F3. The first absorption (F7 zero-zombie-OS = L3's closed-loop
-failure handling) was already triggered as a separate Fable 5 prompt
-the same day. F2 (cron-sentinel) and F4 (validate-ecosystem) not yet
-built; F1 (gate) not yet built.
+- All §1 metrics in `LEVERAGE-MAP.md` pass at the day-30/60/90
+  gate.
+- 30-day trailing steering-event count ≤1 (each one logged in
+  `INCIDENTS.md` with a resulting control).
+- Each remaining steering event consumed by L4's metabolism loop
+  exactly once (i.e., logged incident → control fired within 7
+  days).
+
+## Out of scope
+
+- Stub backfill (KovaForge P6/P7) — ratchets for free via L2
+  linter warnings.
+- Multi-machine redundancy — structural ceiling; L3 + L4 cap
+  blast radius.
+- Discord channel re-architecture — only the ops-digest channel
+  matters for steering.
+- New orchestration tooling — every change lands in files that
+  already exist.
+
+## Cross-scope
+
+- **Scope 01** — L2 (KovaForge portion).
+- **Scope 02** — L1.
+- **Scope 03** — F1–F5 = L2 + L3 + L4 (L1 is Scope 02).
+- **Scope 06 (skill-sustainer)** — runs L2's lint in audit-only
+  mode after L2 lands.
+- **Scope 07 (xerahs reliability)** — L1 patterns applied to
+  xerahs; L3's liveness watchdog is a generalization of U3 in
+  xerahs.

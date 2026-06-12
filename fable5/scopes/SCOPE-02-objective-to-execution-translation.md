@@ -1,92 +1,79 @@
-# Scope — F2: Objective-to-Execution Translation Layer
+# Scope 02 — Adopt the Translation Layer as a Gate
 
-**Fable 5 prompt:** `objective-to-execution-translation.md` (2nd in queue, 2026-06-11)
-**Session id:** `b0d6b11e-e3e0-48a6-a649-ec637964afa7`
-**Outputs (all in `fable5/translation-layer/`):**
-- `README.md` (27 lines, index)
-- `RUBRIC.md` (116 lines, 7-criterion 0-2 score)
-- `GOAL-TEMPLATE.md` (132 lines, the `/goal` block template)
-- `CLAUDE.md` (57 lines, project memory)
-- `examples/01-skills-repo-review.md` (validated example)
-- `examples/02-xerahs-pipeline-reliability.md` (validated example + used to repair a broken queue prompt)
-- `examples/03-monthly-financial-report.md` (validated example)
-**Commits:** `4806cbc`, `e23935f`, `4d88176`, `2d9cac3`, `7a4f407`
+**Drives from:** `fable5/translation-layer/` (RUBRIC, GOAL-TEMPLATE,
+examples 01–03, CLAUDE.md, README) — already built and committed.
+**Goal:** Make the 7-criterion rubric a *blocking gate* at the Fable 5
+runner seam so future prompts cannot execute at <12/14 with any
+criterion at 0. Retro-translate the 4 pre-rubric prompts in the
+current queue before any future run.
+**Owner of this scope:** Aoife (owns the layer + the queue).
 
----
+## Steps
 
-## What was asked
+### 1. Hermes resolution-precedence read (½ day, Aoife)
+- Read Hermes source to learn the actual skill-name collision rule
+  (which root wins). The ecosystem registry in Scope 03 step 1
+  cannot fix semantics without this.
+- Output: one-paragraph rule written to
+  `fable5/translation-layer/REFERENCES.md`.
 
-"Build a reusable translation layer that converts high-level strategic
-objectives into the precise goal statements, success criteria, and
-verification methods that Fable 5 (and future Mythos models) can execute
-with minimal back-and-forth."
+### 2. Runner-side validation in `run-next-fable5.sh` (½ day, Aoife)
+- Insert post-extraction check (~10 guarded lines):
+  - non-empty
+  - exactly one "Done looks like:" clause
+  - names an `Output:` path (fence or path glob)
+  - contains a commit-cadence contract for runs > 5 min
+- On failure: mark prompt `needs-repair` in `progress.json` (new
+  status) and move to next prompt instead of executing half a goal.
 
-## What it produced
+### 3. Auth preflight in runner (½ day, Aoife)
+- Check `claude-auto` auth *before* extracting the goal.
+- On auth failure: park queue with a visible reason; do not mark
+  the prompt as `done`.
 
-A self-contained translation layer, not a single artifact:
+### 4. Retro-translate the 4 pre-rubric prompts (1 day, Aoife)
+The 4 prompts in the current queue that predate the rubric:
+- `openclaw-doctor-resilience-autonomy.md` (5th in queue)
+- `skill-evolution-maintenance-loop.md` (6th)
+- `xerahs-pipeline-reliability-autonomy.md` (7th) — already repaired
+  structurally using example 02; re-score against the full rubric.
+- `zero-zombie-initiative-os.md` (8th) — produced no artifact;
+  retro-translate and re-queue with explicit `Output:` clause.
 
-1. **RUBRIC.md** — 7-criterion scoring (outcome-over-activity, grounded
-   references, no-ambiguity, scope-explicit, success-criteria, verification
-   method, failure-mode-aware) each scored 0-2. **Fable-ready threshold:**
-   ≥12/14 with no criterion at 0. A single 0 means a predictable
-   clarification round-trip or a silent wrong turn — fix before queueing.
-2. **GOAL-TEMPLATE.md** — copy-paste `/goal` block template with all 7
-   sections mapped to rubric criteria; 6-phase translation checklist
-   (parse objective → ground references → extract scope → write success
-   criteria → define verification → simulate the model taking it).
-3. **examples/01..03** — three validated translations of real prompts
-   (skills-repo review, xerahs pipeline, monthly financial report), each
-   scored against the rubric.
-4. **Side effect:** the broken `xerahs-pipeline-reliability-autonomy.md`
-   queue prompt (early-closing fence, duplicate "Done" sections, placeholder
-   skill list) was repaired *using* example 02 as the source of truth.
+For each: walk the 6-phase checklist in
+`translation-layer/GOAL-TEMPLATE.md`, write the translated goal to
+a sibling `*.translated.md`, score against the rubric, store the
+score in `progress.json` (new field `rubric_score`).
 
-## Scope for follow-up action
+### 5. Examples set expansion (½ day, Aoife)
+- Add example 04 covering the antifragility prompt (which had to
+  invent its own output path).
+- Add example 05 covering a `needs-repair` outcome (negative example).
 
-**In scope (where the layer applies):**
-- Every future Fable 5 / Mythos prompt before it enters the queue.
-- The 4 remaining thin prompts in this queue (openclaw-doctor,
-  skill-sustainer, xerahs, zero-zombie) which were flagged as pre-rubric.
-- Any `/goal`-style goal block used elsewhere in the system (OpenClaw
-  cron, Lobster workflows, agent handoffs).
+## Verification
 
-**Out of scope:**
-- The translation layer itself is not a runtime system — it does not
-  auto-translate; it documents the method and provides the template.
-  Operationalizing it (a script that takes a goal block and scores it
-  against the rubric, blocking the queue if <12) was not built.
-- The existing Fable 5 queue mechanics (still uses
-  `run-next-fable5.sh` + `progress.json`).
-- Non-Fable prompts (Codex exec, Lobster, etc.) — the rubric is
-  Fable-class-specific.
+- `bash /Users/mike/Projects/BriarForge/prompts/fable5/run-next-fable5.sh --dry-run`
+  on a copy of the queue with a deliberately malformed prompt:
+  runner refuses to execute and marks `needs-repair`.
+- `jq '.[] | .rubric_score' fable5/progress.json` — all 8 prompts
+  have a score, the 4 retro-translated ones are ≥12/14.
+- One Fable 5 run that previously produced no artifact (F7
+  zero-zombie pattern) now produces a marked deliverable at the
+  stated `Output:` path.
 
-**Decide alone:** the rubric's threshold (12/14) and the per-criterion
-anchors; the 6-phase checklist order; the example set's coverage.
+## Out of scope
 
-**Don't decide alone:** the gate behavior (is it advisory or blocking?),
-who runs the translation (the queue agent itself, a separate pre-flight
-cron, or a human in the loop), how the layer relates to OpenClaw's
-existing `/goal` skill (if any).
+- The translation layer's UX (no editor, no `/translate` skill).
+- Re-scoring the 4 filesystem-deliverable prompts (F1, F2, F3, F5)
+  that already produced strong artifacts.
+- Auto-translation: the layer stays human-in-the-loop; the runner
+  validates, it does not write goals.
 
-## What the deliverables made possible
+## Cross-scope
 
-- F6 (skill-sustainer) used this layer's *form* to score each detected
-  finding — `propose_patches.py` and the rubric are shaped the same way.
-- F3 (antifragility) explicitly references "translation layer
-  (`fable5/translation-layer/`)" as part of the memory/learning layer.
-- The 4 remaining pre-rubric prompts can be retro-translated by hand
-  (or by another Fable 5 run with `skill: translation-layer`).
-
-## Headline metric
-
-Translation round-trips per Fable 5 prompt, before vs after: before =
-unmeasured, but the 4 pre-rubric prompts demonstrate the failure mode
-(8-line extractions, `~/.hermes/` placeholders never verified). After =
-no metrics yet, but the rubric is now defined and one prompt (xerahs)
-was already repaired against it.
-
-## Current status
-
-**Complete and committed.** The 4 remaining pre-rubric prompts in the
-queue are *not* retro-translated; they ran as-is. Translation layer is
-passive documentation, not a gate.
+- **Scope 03 (antifragility F5)** — this scope IS the F5 upgrade
+  (runner lint + retranslation).
+- **Scope 04 (leverage map L1)** — this scope delivers L1
+  (validated goal contract at the execution seam).
+- **Scope 06 (skill-sustainer)** — uses the same Axis-7 model-fit
+  check (lints future prompts via `references/models.yaml`).

@@ -1,106 +1,118 @@
-# Scope — F3: Ecosystem Antifragility Audit
+# Scope 03 — Execute the 5 Antifragility Upgrades (F1–F5)
 
-**Fable 5 prompt:** `ecosystem-antifragility-audit.md` (3rd in queue, 2026-06-11)
-**Session id:** `38c06fb8-448e-49e0-a649-5568a02eb7ff`
-**Outputs (in `fable5/antifragility/`):**
-- `RUBRIC.md` (73 lines, 6-criterion 0-10 antifragile-quality rubric)
-- `ASSESSMENT.md` (302 lines, full assessment, baseline system 4.0/10)
-- `CLAUDE.md` (62 lines, project memory with intervention status table)
-**Commits:** `1f15f95`, `2e890f6`, `bd64692`, `6e692de` (cross-link to F5)
+**Drives from:** `fable5/antifragility/ASSESSMENT.md` (system baseline
+4.0/10, 5 ranked fragility sources F1–F5, each with owner, rollback
+criterion, measurable second-order effect).
+**Goal:** Move system score 4.0 → ≈7.0/10 by landing F1–F5. Re-score
+deterministically by rerunning §2 queries in the assessment.
+**Owner of this scope:** Per-intervention owners below (mirrors
+BRF-ORG-POL-001).
 
----
+## Steps
 
-## What was asked
+### F1 — Ecosystem resolution registry + seam lint (1 day)
+**Owner:** Aoife (registry/policy) + Declan (implementation).
+- Build `validate-ecosystem.py` — natural extension of
+  `validate-skills` (Scope 01 P1) — that walks all 5 skill roots
+  (`/Users/mike/Projects/KovaForge/skills/`,
+  `~/.hermes/profiles/aoife/skills/`, `~/.hermes/skills`,
+  `~/.hermes/hermes-agent/skills`, plus profile-internal bundles),
+  builds `name → path(s)` map, fails on:
+  - cron skill refs that resolve nowhere
+  - cron skill refs that resolve cross-profile (e.g. `financial-report`
+    in Declan only)
+  - duplicate names with non-identical content
+  - dangling `related_skills`
+- Run pre-commit, as a weekly cron, and at schedule-time (a job
+  referencing an unresolvable skill is created paused with a reason).
+- **Rollback:** report-only 2 weeks; promote blocking only if FP
+  rate <5%; demote on 2 wrongful blocks.
+- **Metric:** cron refs resolving nowhere 2→0, cross-profile 1→0;
+  duplicate-divergent-content 5→0; dangling refs 39→0.
 
-"Produce a complete antifragility assessment of the current
-KovaForge/OpenClaw/Hermes agent ecosystem using only these verified roots:
-`/Users/mike/.hermes/protocols/`, the skills repo, `jobs.json`, Aoife
-profile skills, and the Fable 5 queue runner." (Used "more than robust":
-stressors should leave the system *structurally stronger*, not just
-patched.)
+### F2 — Cron health sentinel (½ day)
+**Owner:** Declan.
+- Extend existing `cron-load-balancer` (it already parses `jobs.json`).
+  Daily digest to one ops channel (`#bf-cron-jobs` proposed) that
+  flags: `last_status==error`, N≥3 consecutive failures, unresolvable
+  refs (F1's resolver), delivery-channel mismatch.
+- Phase 2 (after 2 weeks of accurate digests): auto-pause at N≥5
+  consecutive failures, set `paused_reason`.
+- First-iteration hits: PureMac and SpaceX zombie jobs (live today).
+- **Rollback:** one-strike on wrongful auto-pause.
+- **Metric:** MTTD for a failing cron job: unbounded → <24h.
 
-## What it produced
+### F3 — Protocol integrity check + checkable-rule extraction (½ day)
+**Owner:** Aoife.
+- Small lint (lives beside F1's): doc-ID uniqueness across the
+  protocols tree, index↔filesystem reconciliation, required header
+  block (ID, owner, last-review date).
+- Immediate cleanup: merge/renumber the `BRF-OPS-POL-003` pair
+  (verified: same ID, two files, different titles and content).
+- Standing rule: a policy PR containing a machine-checkable clause
+  ships the check or records why not. Target 4/8 policies with checks
+  in 90 days.
+- **Rollback:** read-only by nature; "ship the check" rule reverts
+  to advisory if it stalls more than one policy change per month.
+- **Metric:** duplicate IDs 1→0 (structurally cannot recur);
+  policies with at least one automated check 0/8 → 4/8 in Q3.
 
-- A 6-criterion rubric (failure visibility, stressor metabolism, redundancy
-  with divergence control, reference & boundary integrity, concentration
-  risk, optionality) scored 0-10. **Baseline system score: 4.0/10.**
-- Top 5 fragility sources, ranked by (blast radius × likelihood × silence):
-  - **F1** skill resolution fragmented across ≥5 roots with zero
-    reference validation (evidence: 2 cron jobs reference skills that
-    resolve nowhere; 39 dangling refs; 5 duplicate names with non-identical
-    content).
-  - **F2** zombie cron jobs: failures persist silently in "scheduled"
-    state (evidence: PureMac + SpaceX jobs erroring on schedule, no
-    mechanical enforcement of BRF-OPS-POL-002).
-  - **F3** governance has duplicate IDs and no spec-to-reality
-    enforcement (evidence: `BRF-OPS-POL-003` exists twice with different
-    content; AGENTS.md mandates a frontmatter schema 60%+ of its own repo
-    ignores).
-  - **F4** single-node single-operator concentration with partial state
-    durability (evidence: one Mac; one human consumer; SIGKILL destroyed
-    one full run; `claude-auto` "Not logged in" failure previously silent).
-  - **F5** (implicit, not given a separate section; surfaces in
-    F4 sub-points): cron scheduler has no degraded mode, no auto-pause,
-    no retry-with-backoff.
-- For each, a concrete upgrade, an owner from BRF-ORG-POL-001
-  (Aoife/Declan), rollback criteria, and measurable second-order effects.
-- 4 of 5 failure simulations executed live during the audit; self-score
-  8/10.
+### F4 — State durability + recovery runbook (1 day)
+**Owner:** Declan (execution), Viktor (OpenClaw-side mirror).
+- (a) Pin the daily backup's coverage manifest:
+  `jobs.json`, profile skills, scripts, `.curator_state`. Backup
+  job fails loudly if any item is missing.
+- (b) Skills repo sync weekly→daily (one-line cron change).
+- (c) Runner preflight: `claude-auto` auth check before extracting
+  the prompt, park queue with visible reason on failure (already
+  partial via Scope 02 step 3).
+- (d) `RECOVERY.md` — fresh-machine restore from backups + git
+  remotes, exercised once (the exercise is the verification).
+- **Rollback:** all four are one-line/one-file changes; revert any
+  that adds >5 min to a daily cycle or false-alarms twice.
+- **Metric:** machine-local unpushed work window 7d→1d; runner
+  failure mode changes from "silently lied to progress.json" to
+  "parked with reason".
 
-## Scope for follow-up action
+### F5 — Move lint into the runner + retranslate the queue (½ day)
+**Owner:** Aoife.
+- (a) Runner validation post-extraction (this is Scope 02 step 2
+  duplicated; consolidate the change into one commit).
+- (b) Retro-translate the 4 pre-rubric prompts (this is Scope 02
+  step 4; consolidate).
+- **Metric:** pre-rubric prompts 4→0; truncated-goal class becomes
+  structurally impossible at the runner seam.
 
-**In scope (the audit covers):**
-- The full agent ecosystem: protocols tree, skills repo (5 resolution
-  roots), cron store, Aoife profile, the Fable 5 queue runner, all four
-  active OpenClaw agents (Vladislava, Mikhail, Nadia, Viktor), and the
-  two Hermes orgs (KovaForge and BriarForge).
-- The BRF-ORG-POL-001 delegation matrix as the owner source.
-- The Anti-Zombie Protocol (BRF-OPS-POL-002) as the policy source.
-- A new cron health sentinel (F2 upgrade) and a new ecosystem resolution
-  registry (F1 upgrade) — both natural follow-up builds.
+## Verification
 
-**Out of scope:**
-- Per-skill improvements (those are F1's REVIEW-2026-06-11.md).
-- XerahS-specific operational issues (F4 has its own RELIABILITY-PLAN.md).
-- Strategic planning / quarter roadmap (F5 has its own leverage map).
-- Specific initiative definitions (F7 zero-zombie-OS will own that).
+- Re-run §2 queries of `ASSESSMENT.md` against current state
+  (deterministic commands). Expected:
+  - C1 Failure visibility: 3 → 8
+  - C2 Stressor metabolism: 6 → 8
+  - C3 Redundancy/divergence: 3 → 6 (full 8 needs the KovaForge
+    dup merges from Scope 01 P3 to land)
+  - C4 Reference integrity: 2 → 7
+  - C5 Concentration risk: 4 → 6
+  - C6 Optionality: 6 → 7
+  - System: 4.0 → ~7.0
 
-**Decide alone:** the F1 registry implementation (extending
-`validate-skills` linter); the F2 sentinel's delivery channel
-(natural choice: #bf-cron-jobs, but should be confirmed); the F4
-backup manifest item list.
+## Out of scope
 
-**Don't decide alone:** the F2 auto-pause threshold (proposed N≥5
-consecutive failures, but this is a UX call); the F4 weekly→daily
-sync change (one-line cron change but operational implications);
-whether the cron sentinel should be a new meta-job or an extension of
-the existing `cron-load-balancer`; cross-org ownership for
-interventions that touch both KovaForge and BriarForge.
+- Multi-machine redundancy (the single-Mac/single-human ceiling is
+  structural; F4 caps blast radius instead of lifting it).
+- Skill *content* quality (semantic correctness, not structure).
+- A new governance tool — all five land in existing files and
+  jobs.
 
-## What the deliverables made possible
+## Cross-scope
 
-- **F5 (leverage-point-mapping)** cross-linked each F1-F5 finding to one
-  of L1-L4 absorption changes (commit `6e692de`); the antifragility
-  audit's fragility sources *are* the leverage map's input set.
-- **F7 (zero-zombie-OS)** is a direct response to F2 ("zombie cron
-  jobs: failures persist silently") and F3 ("no spec-to-reality
-  enforcement") — F2 in the antifragility assessment = the same
-  problem F7 was scoped to solve.
-- **F4 (xerahs-pipeline-reliability)** addresses F4 sub-points
-  (state durability, recovery runbook) for one specific workflow
-  family.
-
-## Headline metric
-
-Baseline system score: 4.0/10. Each F1-F5 upgrade is paired with a
-measurable second-order effect (count, ratio, mean-time-to-detect).
-Running the same audit again after upgrades would yield the delta;
-no re-run scheduled.
-
-## Current status
-
-**Complete and committed.** All 5 fragility sources have an owner, a
-rollback criterion, and a measurable second-order effect. No upgrade
-has been *built*; the audit produced a plan, not actions. Two of the
-5 upgrades were effectively repeated as separate Fable 5 prompts
-(F4 → F4, F2 → F7) — see "deliverables made possible" above.
+- **Scope 01** — F1 = P1 of the skills review.
+- **Scope 02** — F5 = the runner lint + retranslation.
+- **Scope 04 (leverage map)** — F1–F5 = L2 + L3 + L4 of the
+  quarter plan; L1 is Scope 02.
+- **Scope 05 (openclaw-doctor)** — addresses the doctor subsystem
+  redesign; F2/F3 are complementary (cron + governance), not
+  duplicative.
+- **Scope 07 (xerahs reliability)** — F4's state-durability pass
+  is the general-case version of what U1–U3 in xerahs already
+  targets.

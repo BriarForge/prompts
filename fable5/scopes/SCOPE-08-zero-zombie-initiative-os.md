@@ -1,102 +1,128 @@
-# Scope — F7: Zero-Zombie Initiative Operating System
+# Scope 08 — Build the Cron Sentinel (the L3 / F7-Z Absorption)
 
-**Fable 5 prompt:** `zero-zombie-initiative-os.md` (8th and last in queue, 2026-06-12)
-**Session id:** `0ad016e1-51c7-4bb0-bce7-e2d165522176`
-**Outputs:** **None on disk** in the Fable 5 prompt repo (no `zero-zombie/` directory, no deliverable file). The prompt file itself was not redrafted; Fable 5's only edit was the appended `## Notes` block.
-**Commit:** `28953ac` "fable5: ran zero-zombie-initiative-os.md" (auto-generated runner mark-done; contains no deliverable).
+**Drives from:** `fable5/zero-zombie-initiative-os.md` ran thin and
+produced **no artifact on disk** (no `fable5/zero-zombie/`
+directory, no deliverable file). The prompt is marked `done` in
+`progress.json` but is the queue's clearest miss. F5 (leverage map)
+identifies this scope's actual content as the L3 "closed-loop
+failure handling" absorption; F3 (antifragility F2) names the
+same problem.
+**Goal:** Build the cron health sentinel that the prompt was
+*supposed* to describe but didn't, and tighten the runner's
+success gate so this class of miss can't recur.
+**Owner of this scope:** Declan (sentinel build) + Aoife (runner
+gate) + Mike (judgment call on auto-pause thresholds).
 
----
+## Steps
 
-## What was asked
+### 1. Retro-translate the original prompt (½ day, Aoife)
+- Use `translation-layer/GOAL-TEMPLATE.md` to write a proper
+  version of the prompt. Key additions the original lacked:
+  - Explicit `Output:` path: `fable5/zero-zombie-initiative/
+    OPERATING-SYSTEM.md` (the original guessed nothing).
+  - Explicit `Done looks like:` clause listing the deliverable
+    sections (rubric, assessment, scenario walkthroughs,
+    prioritized upgrades, sign-off table — parallel to F3
+    antifragility's structure).
+  - Commit cadence: progressive commits per section, final
+    commit at end.
+- Score the translation against the rubric: target ≥12/14
+  with no criterion at 0.
+- Store the translated prompt as
+  `fable5/zero-zombie-initiative/GOAL.translated.md`.
 
-"Design a lightweight but rigorous operating system for all strategic
-initiatives that enforces clear ownership, timeout, checkpoint cadence,
-and automatic zombie-kill triggers. It must integrate with existing
-Hermes tooling without adding ceremony." Grounded in
-`/Users/mike/.hermes/protocols/`, the agents table, cron store, and
-the Fable 5 queue mechanics.
+### 2. Build the cron health sentinel (1 day, Declan)
+This is the actual artifact the prompt was supposed to produce.
+- Extend the existing `cron-load-balancer` skill (it already
+  parses `jobs.json`):
+  - **Phase 1 (days 0–30, report-only):** daily digest to one
+    ops channel. Flag `last_status==error`, N≥3 consecutive
+    failures, refs that don't resolve (reuse the F1 resolver
+    from Scope 03), delivery-channel mismatch heuristics.
+  - **Phase 2 (days 31–60, blocking):** auto-pause at N≥5
+    consecutive failures with `paused_reason` set. Fields
+    already exist in the schema.
+- One-strike rollback on wrongful auto-pause (per F3 F2
+  rollback criterion).
+- **Verify:** with the live PureMac + SpaceX zombies (the
+  sentinel's first catches), the digest emits both
+  within 24h; the second digest shows the same set; after
+  Mike fixes them, the third digest shows zero.
 
-## What it produced
+### 3. Tighten the Fable 5 runner success gate (½ day, Aoife)
+The current gate is `is_error: false`, which let the
+zero-zombie prompt mark itself done with no artifact. The
+new gate:
+- After a run: check that `progress.json[prompt].artifacts`
+  contains ≥1 file path that exists on disk AND that file's
+  first non-blank line contains either `Output:`, a heading,
+  or matches the prompt's `Done looks like:` clause.
+- If the gate fails: revert status to `pending`, mark the
+  prompt as `needs-repair`, write a one-line note to
+  `runs.log` explaining which check failed.
+- **Rollback:** one-strike — if the gate ever blocks a
+  prompt a human reviews as well-formed, revert.
+- **Verify:** the F7 zero-zombie run, replayed against the
+  new gate, is correctly marked `needs-repair` with the
+  evidence: "no artifact file written".
 
-Effectively nothing. The prompt is **structurally thin** (pre-
-translation-layer; flagged as such by F2). The extracted prompt was
-~12 lines of `text` block. The Fable 5 session likely returned a
-short response that the runner did not persist to a deliverable
-file, and the auto-commit captured only the runner's bookkeeping.
+### 4. Add the per-initiative enforcement hook (½ day, Aoife)
+The prompt's intent was a per-initiative OS (owner, timeout,
+checkpoint, zombie-kill triggers). Operationalize the core
+four fields:
+- **Owner:** pull from `BRF-ORG-POL-001` role matrix.
+- **Timeout:** mandate on all cron jobs and Fable 5 prompts
+  (`timeoutSeconds` in the cron schema).
+- **Checkpoint:** progressive commits at every major section
+  for Fable 5; atomic state writes for cron jobs.
+- **Zombie-kill trigger:** the sentinel (step 2) + the runner
+  gate (step 3) provide mechanical enforcement; everything
+  else is policy and is checked by the F3 protocol integrity
+  lint (Scope 03 F3).
+- **Output:** a 1-page reference at
+  `fable5/zero-zombie-initiative/OPERATING-SYSTEM.md` (the
+  path the retro-translated prompt in step 1 will write to).
 
-This is the second prompt in the queue (after F4 openclaw-doctor)
-where the "thin prompt" pattern produced no observable deliverable.
-The runner's success gate (`is_error: false`) was satisfied, so the
-status was marked `done`, but no artifact exists.
+## Verification
 
-## Scope for follow-up action
+- Sentinel digest lives in one ops channel; first 7 daily
+  digests accurate (no false positives, both real zombies
+  caught).
+- Live PureMac + SpaceX zombie jobs fixed; sentinel emits
+  zero after.
+- Runner gate: a synthetic Fable 5 run with a deliberately
+  empty output produces a `needs-repair` entry in
+  `progress.json` and a one-line note in `runs.log`.
+- `OPERATING-SYSTEM.md` exists at
+  `fable5/zero-zombie-initiative/` and contains the four
+  enforcement hooks with concrete examples (1 cron, 1 Fable 5
+  prompt, 1 skill-sustainer proposal).
 
-**In scope (the prompt's intent, not its delivery):**
-- The Anti-Zombie Protocol (`BRF-OPS-POL-002`) as the policy source —
-  currently exists on paper with no mechanical enforcement.
-- All strategic initiatives currently running (Mission Control,
-  XerahS refactor, MPC, Financial Report, TasteTrail, the Fable 5
-  queue itself).
-- The cron store's zombie-class jobs (2 already known to be
-  erroring silently per F3 evidence).
-- The Fable 5 queue's own state-tracking bug (F3 NOTE 2026-06-12).
+## Out of scope
 
-**Out of scope (per the prompt):**
-- A new tool — the brief says "integrate with existing Hermes
-  tooling without adding ceremony."
+- A new initiative-management tool — this scope integrates
+  with the existing cron, runner, and protocol infrastructure.
 - Per-initiative content — this is meta, the OS above the
   initiatives.
-- A philosophical take on initiative management — this is
-  operational, not strategic.
+- Multi-machine redundancy — F3 F5 ceiling; this scope caps
+  blast radius, doesn't lift it.
+- Re-running the F7 prompt with the new translation (the
+  deliverable from step 1 *is* the retro-translation; running
+  it is a separate decision).
 
-**Decide alone:** none — no deliverable was produced.
+## Cross-scope
 
-**Don't decide alone:** without a deliverable, there is nothing to
-decide on. This scope is a *debt record*: the prompt is marked done
-in `progress.json` but produced no artifact.
-
-## What the deliverables made possible
-
-- **Nothing yet.** The cron health sentinel (F3 F2 / F5 L3) is the
-  mechanical implementation of "zombie-kill triggers"; it is still
-  unbuilt. The Fable 5 queue's own zombie-kill for stuck
-  `running` entries was *hand-implemented* by Vladislava
-  (commit `e4de4d0` reconciling `ecosystem-antifragility-audit.md`,
-  commit `878ea79` reconciling `leverage-point-mapping.md`, plus
-  the payload-level reconciliation note added to the cron job
-  `1ebe8e1b-…`).
-
-## Headline metric
-
-**Deliverables produced: 0.**
-**Status in progress.json: done.**
-**Lasting impact: none yet observable.**
-
-This is the queue's clearest miss. The Fable 5 success gate
-(`is_error: false`) was satisfied but the prompt was so thin that
-"success" means "ran without erroring," not "produced an artifact."
-
-## Current status
-
-**Marked done; no artifact; debt.** To get the actual initiative OS,
-the prompt needs to be retro-translated through F2 (translation
-layer) and re-queued, with a clear "Output: PATH" clause so the
-runner has somewhere to put the deliverable. The F5 leverage map
-explicitly identifies this as the absorption point for L3
-("closed-loop failure handling") — i.e. the cron sentinel and the
-zombie-kill triggers are *the same artifact* this prompt was
-supposed to produce. Without F7, L3 is not absorbable.
-
-Mike's standing question "Is my call in relation to audit actions?"
-applies here most acutely: this is an audit that produced no plan
-and no actions, and yet was marked complete.
-
-## Recommendation
-
-The Fable 5 queue's `success gate` is currently `is_error: false`,
-which is a too-loose definition of "done." A more honest gate
-would require: (a) a deliverable file written, (b) deliverable
-committed, (c) deliverable's first non-blank line contains
-"Output:" or a heading matching the prompt's stated "Done looks
-like:" clause. This is a runner change, not a Fable 5 prompt
-change, and would be F1.5 (runner hardening) in the leverage map.
+- **Scope 02 (translation layer)** — step 1 uses the rubric
+  template; step 3 IS the F5 runner lint + retranslation
+  (the L1 absorption).
+- **Scope 03 (antifragility F2)** — step 2 IS the cron health
+  sentinel.
+- **Scope 04 (leverage map L3)** — this scope is the L3
+  absorption; the running tally of steering-event reductions
+  lives in `fable5/antifragility/INCIDENTS.md` (created by
+  Scope 04 L4).
+- **Scope 05 (openclaw-doctor)** — Part B's doctor subsystem
+  design (gateway-connectivity scenario) is the same
+  failure class this sentinel catches.
+- **Scope 07 (xerahs)** — U3 in xerahs is the xerahs-specific
+  version of step 2.
