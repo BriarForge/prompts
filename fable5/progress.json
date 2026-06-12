@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-12T12:10:02Z",
+  "last_updated": "2026-06-12T18:38:45Z",
   "current_index": 0,
   "prompts": [
     {
@@ -67,9 +67,9 @@
     },
     {
       "file": "xerahs-macos-support-improvement.md",
-      "status": "pending",
-      "last_run": "2026-06-12T16:40:52Z",
-      "session_id": null,
+      "status": "done",
+      "last_run": "2026-06-12T18:38:45Z",
+      "session_id": "ad4b512a-609e-4e0a-a6ef-b6328c66a168",
       "notes": "failed: claude-auto exit=1: You've hit your session limit · resets 12:50am (Australia/Perth)"
     }
   ]
