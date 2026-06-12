@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-06-12T06:43:28Z",
+  "last_updated": "2026-06-12T11:57:06Z",
   "current_index": 0,
   "prompts": [
     {
@@ -35,7 +35,7 @@
       "status": "done",
       "last_run": "2026-06-12T01:32:20Z",
       "session_id": "768515fe-63d8-4df6-8709-0d039121b2a5",
-      "notes": "failed: claude-auto exit=1: You've hit your session limit · resets 7:40am (Australia/Perth)"
+      "notes": "failed: claude-auto exit=1: You've hit your session limit \u00b7 resets 7:40am (Australia/Perth)"
     },
     {
       "file": "skill-evolution-maintenance-loop.md",
@@ -57,6 +57,20 @@
       "last_run": "2026-06-12T06:43:28Z",
       "session_id": "0ad016e1-51c7-4bb0-bce7-e2d165522176",
       "notes": ""
+    },
+    {
+      "file": "xerahs-linux-support-improvement.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "queued by Mike 2026-06-12"
+    },
+    {
+      "file": "xerahs-macos-support-improvement.md",
+      "status": "pending",
+      "last_run": null,
+      "session_id": null,
+      "notes": "queued by Mike 2026-06-12"
     }
   ]
 }
