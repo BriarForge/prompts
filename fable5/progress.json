@@ -68,9 +68,9 @@
     {
       "file": "xerahs-macos-support-improvement.md",
       "status": "pending",
-      "last_run": null,
+      "last_run": "2026-06-12T16:40:52Z",
       "session_id": null,
-      "notes": "queued by Mike 2026-06-12"
+      "notes": "failed: claude-auto exit=1: You've hit your session limit · resets 12:50am (Australia/Perth)"
     }
   ]
 }
