@@ -1,13 +1,13 @@
 ---
-tags: [xerahs, hourly-sweep, code-review, agent-agnostic]
+tags: [xerahs, sweep, code-review, agent-agnostic]
 category: coding
 version: 1
 last-used: 2026-07-07
 ---
 
-# XerahS Hourly Sweep Prompt (agent-agnostic)
+# XerahS Sweep Prompt (agent-agnostic)
 
-Launch the XerahS hourly-review sweep via the `xerahs-hourly-sweep` skill, scoped to a single area, with a clear primary target and ranked fallbacks. The prompt is parameterized so any per-person git wrapper can drive it.
+Launch a XerahS review sweep via the `xerahs-hourly-sweep` skill, scoped to a single area, with a clear primary target and ranked fallbacks. The prompt is parameterized so any per-person git wrapper can drive it, and the cadence is whatever the operator wants — the skill folder is named `hourly-sweep` but in practice runs happen on demand (e.g. 22h gap between the 2026-07-06 21:18 and 2026-07-07 19:35 AWST sweeps).
 
 ## Placeholders to fill before sending
 
@@ -30,7 +30,7 @@ Launch the XerahS hourly-review sweep via the `xerahs-hourly-sweep` skill, scope
 ## Prompt
 
 ```text
-You are [AGENT_NAME] running the XerahS hourly-review sweep. Use the `xerahs-hourly-sweep` skill as your procedure; do not invent steps.
+You are [AGENT_NAME] running a XerahS review sweep. Use the `xerahs-hourly-sweep` skill as your procedure; do not invent steps.
 
 WORKSPACE
 - Repo:   [REPO_PATH]
@@ -71,7 +71,7 @@ SELF-CHECK BEFORE COMMITTING
 
 OUTPUT (post to #xerahs as your final message)
 A single summary block, in this exact shape:
-  ## XerahS Hourly Sweep — <YYYY-MM-DD HH:MM AWST> ([AGENT_NAME])
+  ## XerahS Sweep — <YYYY-MM-DD HH:MM AWST> ([AGENT_NAME])
   - HEAD: <sha> on [AGENT_BRANCH]
   - Area: <one line, with file:line>
   - Status: Fixed | Reviewed (clean) | Reviewed (deferred)
@@ -94,7 +94,8 @@ Begin by reading the SKILL.md, then `[GIT_WRAPPER] fetch --all` to confirm where
 
 # Notes
 
-- **Origin.** First used 2026-07-07 to run Declan's hourly sweep at Mcored's request (`#xerahs` message 1524013641802977393, four-part follow-up chain ending at 1524013654377234494). That run produced `f38372f2` — FileDownloader early-EOF path, Reviewed (clean), no version bump.
+- **Origin.** First used 2026-07-07 to run Declan's review sweep at Mcored's request (`#xerahs` message 1524013641802977393, four-part follow-up chain ending at 1524013654377234494). That run produced `f38372f2` — FileDownloader early-EOF path, Reviewed (clean), no version bump.
+- **Cadence.** The skill folder is `xerahs-hourly-sweep` and the state file is `docs/reports/hourly_review_state.json`, but the actual cadence is whatever you decide — runs are scheduled on demand, not strictly every hour. Do not rename those files; just don't promise a 1h cadence in the prompt itself.
 - **Agent-agnostic by design.** The hardcoded `git-declan` references from the original were replaced with `[GIT_WRAPPER]` / `[AGENT_BRANCH]` / `[AGENT_REMOTE]` placeholders, per Mcored's 2026-07-06 directive: "The skill should be runnable by any agent... if Milena runs it, `git-milena` can git commit, if Nadia runs it then `git-nadia` can git commit." The same template now drives any wrapper.
 - **When to update.** Bump the prompt's `version` whenever the procedure changes (e.g. skill consolidation, new Step 3.5 sub-step, output format change). Update `last-used` each time you actually run a sweep from it.
 - **Tunables per run.** The three pick slots (primary + two fallbacks) are the variables that change most often. Pull them from the current top of `next_candidates` and confirm against the SKILL.md pick rules before pasting into the prompt body.
