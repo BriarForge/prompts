@@ -1,13 +1,13 @@
 ---
-tags: [xerahs, xbackbone, integration, sharex, reusable]
+tags: [xerahs, xbackbone, amazon-s3, integration, reusable]
 category: xerahs
-version: 1
+version: 2
 ---
 
-# XerahS xbackbone destination + auto-copy link
+# XerahS xbackbone destination (mirror Amazon S3) + auto-copy
 
 ```text
-You are adding a first-class xbackbone destination to XerahS, plus ShareX-style copy-link-after-upload. Repo: /Users/mike/Projects/KovaForge/xerahs. Stay on existing develop. Follow root AGENTS.md. No new branches or issues. Verify with the narrowest relevant tests + dotnet build.
+You are adding a first-class xbackbone destination to XerahS the same way Amazon S3 is already implemented, plus ShareX-style copy-link-after-upload if that path already exists. Repo: /Users/mike/Projects/KovaForge/xerahs. Stay on existing develop. Follow root AGENTS.md. No new branches or issues. Verify with the narrowest relevant tests + dotnet build.
 
 User request (verbatim):
 "Summary
@@ -19,27 +19,31 @@ I think all users from xbackbone who are on macos or on linux will benefits of t
 Benefit
 Remove the need of custom config for xbackbone integration."
 
-Goal: first-class xbackbone destination (no custom uploader config) and copy the uploaded URL to the clipboard after success. No scope creep.
+Implementation rule (user): add xbackbone the way Amazon S3 is implemented.
+
+Goal: S3-parity destination (settings, auth/config, upload, returned URL) with no custom-uploader config. Reuse existing post-upload clipboard copy if present. No scope creep.
 
 Investigate first:
-1. Existing upload destinations / custom-uploader surface; closest pattern to reuse.
-2. How xbackbone is configured today (URL, token/auth, path); treat API/auth as unknown until primary docs or in-repo usage prove it.
-3. Post-upload clipboard copy: does any destination already do this? Per-OS clipboard path.
-4. Assumptions + unknowns before design. Do not invent xbackbone endpoints.
+1. Map the Amazon S3 destination end-to-end and treat it as the template. Do not invent type/file names.
+2. xbackbone URL/token/auth/path from primary docs or in-repo usage only.
+3. Whether S3 or any destination already copies the uploaded URL; reuse that path.
+4. List assumptions + unknowns. Do not invent xbackbone endpoints.
 
 Deliver:
-- Approach (smallest v1: destination + auto-copy)
+- S3-vs-xbackbone map (what clones, what must differ)
 - Config/auth shape (no secrets in repo)
 - Files / diff summary
 - Verify steps (macOS + Linux) + expected result
 - Residual risk / open questions
 
-Constraints: reuse existing destination/uploader abstractions; behavior-preserving elsewhere; no architecture rewrite; no ShareX clone. Code only after approach is locked.
+Constraints: clone the S3 destination pattern; reuse uploader/clipboard abstractions; behavior-preserving elsewhere; no architecture rewrite; no ShareX clone. Code only after the S3 map is written.
 ```
 
 # Notes
+- v2: user named Amazon S3 as the reference. Same file, in-place edit (no new SW-style ID).
+- 1739 chars in the fenced body (under the 2k paste cap).
 - Feature, not bug. Borrowed shape from `first-party-cli-or-plugin` (discovery -> smallest v1 -> config -> verify) without its generic host placeholders.
-- 1582 chars in the fenced body (under any default 2k paste cap).
 - Verbatim user request preserved.
 - Do not invent xbackbone API endpoints, auth scheme, or XerahS class names; investigate first.
+- Auto-copy is kept; reuse the existing path if S3 (or another destination) already copies the URL. Do not build a second clipboard system.
 - XerahS-specific: stays under `coding/xerahs/` until explicitly generalized.
