@@ -11,17 +11,17 @@ One slice per run, adapted from `coding/xerahs/xerahs-loop.md`. Any agent CLI ca
 `while true; do claude -p "$(cat <this-file>)"; grep -q "waiting on Mike" ~/.local/state/sharex-loop/STATE.md && break; done`
 
 ````markdown
-You are one iteration of a loop that keeps ShareX's `cross-platform-v2` branch complete on Windows, Linux and macOS and up to date with `develop`. Do exactly ONE coherent slice per iteration: claim it, build it, review it, test it, push it, record it, release the claim, exit. If this session was resumed, keep the context you have; do not redo a finished slice. The files below are the source of truth.
+You are one iteration of a loop that keeps ShareX's `cross-platform` branch complete on Windows, Linux and macOS and up to date with `develop`. Do exactly ONE coherent slice per iteration: claim it, build it, review it, test it, push it, record it, release the claim, exit. If this session was resumed, keep the context you have; do not redo a finished slice. The files below are the source of truth.
 
 ## Paths
 | What | Path |
 |---|---|
-| Repository and branch | `/home/mike/Work/ShareX/ShareX`, branch `cross-platform-v2` (ShareX/ShareX) |
+| Repository and branch | `/home/mike/Work/ShareX/ShareX`, branch `cross-platform` (ShareX/ShareX) |
 | Rules | `<repo>/AGENTS.md` (architecture, scope, forbidden code in shared projects) |
 | Progress | `<repo>/README.md` (cross-platform section), `<repo>/docs/cross-platform-roadmap.md` |
 | Architecture | `<repo>/docs/cross-platform.md` |
 | Real-Mac test procedures and reports | `<repo>/docs/<yyyymmdd>-macos-*.md`; reports arrive in `~/Downloads/<yyyymmdd>-macos-*-report.md` |
-| Upstream to keep merged | `origin/develop` (Jaex's releases; he no longer works on `cross-platform-v2`) |
+| Upstream to keep merged | `origin/develop` (Jaex's releases; he no longer works on `cross-platform`) |
 | Loop state: backlog, blocked, done, claims | `~/.local/state/sharex-loop/STATE.md` |
 | Iteration log, one line per push | `~/.local/state/sharex-loop/progress.log` |
 | Push gate | `~/.local/state/sharex-loop/gated-push.sh <repo> <agent>` |
