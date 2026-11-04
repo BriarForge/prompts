@@ -1,7 +1,7 @@
 ---
 tags: [sharex, loop, cross-platform, agent-agnostic, reusable]
 category: coding
-version: 1
+version: 2
 last-used: 2026-11-04
 ---
 
@@ -25,18 +25,20 @@ You are one iteration of a loop that keeps ShareX's `cross-platform` branch comp
 | Loop state: backlog, blocked, done, claims | `~/.local/state/sharex-loop/STATE.md` |
 | Iteration log, one line per push | `~/.local/state/sharex-loop/progress.log` |
 | Push gate | `~/.local/state/sharex-loop/gated-push.sh <repo> <agent>` |
+| Decision log (append-only TSV) | `~/.local/state/sharex-loop/decisions.tsv`, append with `~/.local/state/sharex-loop/log.sh <log> <phase> <decision> <why> <evidence> <result>` |
+| Engineering method | the `pstack-engineering` skill (`~/.claude/skills/pstack-engineering`, also linked for Codex, Hermes and OpenClaw): playbooks in `references/playbooks/`, principles in `references/principles/` |
 | Workspace rules | `/home/mike/Work/AGENTS.md` |
 
 ## Each iteration
 1. **Sync.** `git -C <repo> fetch -q`, check `git status -sb`. If there are uncommitted changes you did not make, read them and the claims before touching anything; never discard someone else's work. Then `git pull --rebase`.
 2. **Upstream first.** If `git log --oneline HEAD..origin/develop` is not empty, the slice is merging `develop`: keep both sides of every conflict, and move any new Windows-only code (P/Invoke, COM, WinRT, Vortice, registry, GDI+, `OperatingSystem.Is…` branches) behind a `ShareX.Platform` service implemented in `ShareX.Platform.Windows`, with reasoned `NotSupported` stubs or real implementations on Linux and macOS.
-3. **Read the state.** Read `STATE.md`. If it is missing or the backlog is stale, rebuild it from the README, the roadmap, open macOS report findings and `git log`, and make that the slice.
+3. **Read the state.** Read `STATE.md` and the last rows of `decisions.tsv`. If this run adds to rows another run wrote, log a `start` row first (see the skill's `references/decision-log.md`). If it is missing or the backlog is stale, rebuild it from the README, the roadmap, open macOS report findings and `git log`, and make that the slice.
 4. **Claim.** Take the top unclaimed backlog item small enough for one iteration that does not overlap another claim. Add `- <agent> <ISO time>: <slice> | files: <globs>` under `## Claims`. Claims older than 6 hours are stale.
-5. **Build.** Follow AGENTS.md: OS behaviour only through `PlatformServices.Current`; Windows behaves as `develop`; Linux and macOS get every feature their system supports; optional programs are detected at run time, never bundled or installed.
-6. **Self-review.** Read your whole diff as a stranger. Risky areas: untrusted input, writes (atomic, never truncate before success), threads and native callbacks (UI thread only, nothing late into a disposed owner), persisted settings (old files load), secrets (never plain text). For every bug you fix, add a regression test and check it fails without the fix.
+5. **Build with a pstack playbook.** Pick the one that fits the slice and read it: a macOS or Linux report finding is **bug-fix** (reproduce, root cause, regression test that fails first); a new platform service or capability is **feature** (settle the contract and data shape first); moving code behind `ShareX.Platform` or merging `develop` is **refactoring** (pin behaviour with tests, migrate callers, then delete the old path); a question is **investigation**. Read only the principles the playbook names. Follow AGENTS.md: OS behaviour only through `PlatformServices.Current`; Windows behaves as `develop`; Linux and macOS get every feature their system supports; optional programs are detected at run time, never bundled or installed.
+6. **Verify, then self-review.** Run the skill's **verification** playbook against the real artifact: native code is exercised against the real library or window (a probe, or an opt-in test such as `SHAREX_GSTREAMER_WINDOW_TEST=1`), not only compiled; say plainly what could not be checked (a real Mac, a Windows desktop). Then read your whole diff as a stranger. Risky areas: untrusted input, writes (atomic, never truncate before success), threads and native callbacks (UI thread only, nothing late into a disposed owner), persisted settings (old files load), secrets (never plain text). For every bug you fix, add a regression test and check it fails without the fix.
 7. **Commit.** Subject in plain English (what users can now do). Body: what changed, what remains. End with your agent's trailer.
 8. **Push** only through `gated-push.sh`. On a rebase conflict, resolve every hunk deliberately and rerun. Never force-push or rewrite pushed history.
-9. **Record.** Append `<ISO time> <agent> <hash> <slice> | tests N` to `progress.log`; move the item to `## Done`; add new work or blockers to `STATE.md`; update the README progress section when a system's status changes. Exit.
+9. **Record.** Log the slice's decisions to `decisions.tsv` (forks, pivots, verification results, each with an evidence pointer) and audit them against what happened; append `<ISO time> <agent> <hash> <slice> | tests N` to `progress.log`; turn any lesson into structure (a test, an AGENTS.md rule, a line in `docs/cross-platform-learnings.md`); move the item to `## Done`; add new work or blockers to `STATE.md`; update the README progress section when a system's status changes. Exit.
 
 ## Rules
 - Never send real user data to third-party upload services; test uploads against a local HTTP server.
