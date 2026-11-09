@@ -1,6 +1,6 @@
 ---
 tags: [xerahs, multi-agent, orchestration, codex, grok, minimax, sonnet, code-quality, reusable]
-category: coding
+category: xerahs
 version: 2
 last-used: 2026-10-23
 ---

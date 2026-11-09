@@ -1,6 +1,6 @@
 ---
 tags: [cli, plugin, integration, xerahs]
-category: meta
+category: xerahs
 version: 1
 ---
 

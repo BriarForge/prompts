@@ -1,6 +1,6 @@
 ---
 tags: [agents, models, config, inventory]
-category: meta
+category: team-config
 version: 1
 ---
 

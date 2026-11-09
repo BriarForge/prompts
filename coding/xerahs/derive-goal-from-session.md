@@ -1,6 +1,6 @@
 ---
 tags: [goal, session, reusable]
-category: meta
+category: xerahs
 version: 1
 ---
 

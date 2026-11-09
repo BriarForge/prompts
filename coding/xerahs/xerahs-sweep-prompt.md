@@ -1,6 +1,6 @@
 ---
 tags: [xerahs, sweep, code-review, agent-agnostic]
-category: coding
+category: xerahs
 version: 4
 last-used: 2026-07-11
 ---

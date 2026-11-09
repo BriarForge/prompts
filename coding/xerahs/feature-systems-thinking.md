@@ -1,11 +1,12 @@
 ---
 tags: [feature, systems-thinking, planning]
-category: meta
+category: xerahs
 version: 1
 ---
 
 # Feature work: systems-thinking
 
+```text
 Approach this like a systems thinker.
 
 1. Define the core problem clearly
@@ -23,6 +24,7 @@ Approach this like a systems thinker.
 
 Problem:
 [paste problem description here]
+```
 
 # Notes
 - Replace `[paste problem description here]` with the actual problem before use.

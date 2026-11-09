@@ -1,6 +1,6 @@
 ---
 tags: [cron, skills, migration, architecture]
-category: architecture
+category: team-config
 version: 1
 ---
 

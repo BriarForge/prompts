@@ -1,3 +1,9 @@
+---
+tags: [agents, cron, inventory, reusable]
+category: team-config
+version: 1
+---
+
 # List Agent Cron Jobs by Frequency
 
 ```text

@@ -1,6 +1,6 @@
 ---
 tags: [xerahs, multi-agent, grok, codex, supervision, code-quality, reusable]
-category: coding
+category: xerahs
 version: 1
 last-used: 2026-10-24
 ---

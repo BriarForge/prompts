@@ -1,3 +1,9 @@
+---
+tags: [agents, plugins, review, coding, reusable]
+category: team-config
+version: 1
+---
+
 # Review and Selectively Adopt a Coding Plugin
 
 ```text

@@ -29,7 +29,7 @@ Inherited from `/Users/mike/Projects/BriarForge/AGENTS.md`. When this file and t
 
 When the user asks to "save a prompt" (or equivalent phrasing such as "store this prompt", "save this as a recurring prompt", "add this prompt to the library"):
 
-1. Create a new Markdown file inside the appropriate category subfolder (e.g. `coding/`, `team-config/`) using `<kebab-case-name>.md`.
+1. Create a new Markdown file inside the appropriate category subfolder (see the folder list in `README.md`; do not create a new top-level folder without asking Mike) using `<kebab-case-name>.md`.
 2. The filename should be a concise kebab-case version of the prompt's purpose or title.
 3. File contents should be a clean, self-contained Markdown document containing:
    - A level-1 heading with the prompt title
