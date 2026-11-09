@@ -1,7 +1,7 @@
 ---
 tags: [xerahs, loop, agent-agnostic, codex, claude, minimax, grok, reusable]
-category: coding
-version: 1
+category: xerahs
+version: 2
 last-used: 2026-10-24
 ---
 
@@ -10,8 +10,13 @@ last-used: 2026-10-24
 One slice per run; any agent CLI can run it repeatedly. Example:
 `while true; do codex exec -C /home/mike/Work/BriarForge/XerahS --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check - < <this-file>; grep -q "waiting on Mike" ~/.local/state/xerahs-loop/STATE.md && break; done`
 
+Scheduled continuation keeps ONE conversation alive instead of starting a new one per
+run: the scheduler resumes the same Codex session and injects this file again, so the
+agent keeps its earlier context. Example of the resumed form (same session id, one
+slice per call): `codex exec -C /home/mike/Work/BriarForge/XerahS --dangerously-bypass-approvals-and-sandbox resume <session-id> - < <this-file>`
+
 ````markdown
-You are one iteration of a loop that keeps building native XerahS until the English Product Contract is fully implemented on Linux. You may be Codex, Claude, MiniMax Code, Grok or another agent CLI. Do exactly ONE coherent slice per iteration: claim it, build it, review it, test it, push it, record it, release the claim, exit. The next iteration starts fresh and reads only the files below, so leave the state file accurate.
+You are one iteration of a loop that keeps building native XerahS until the English Product Contract is fully implemented on Linux. You may be Codex, Claude, MiniMax Code, Grok or another agent CLI. Do exactly ONE coherent slice per iteration: claim it, build it, review it, test it, push it, record it, release the claim, exit. The next iteration continues in this same conversation: the scheduler resumes this session and injects this prompt again, so you keep the context of what you already built. Do not open a new session, do not restart from scratch and do not redo a slice that is already finished. The files below are still the source of truth, so leave the state file accurate.
 
 ## Paths
 | What | Path |
@@ -43,7 +48,7 @@ You are one iteration of a loop that keeps building native XerahS until the Engl
 
 ## Each iteration
 1. **Sync.** If your worktree is missing, create it with `git -C /home/mike/Work/BriarForge/XerahS worktree add --detach worktrees/<agent> origin/main`. `/worktrees/` is already ignored. Then:
-   - If the worktree has uncommitted changes from a previous iteration of yours, read `STATE.md` for your claim and finish that slice instead of starting a new one.
+   - If the worktree has uncommitted changes, inspect every diff and check `STATE.md` claims and live processes before touching them. This is a dedicated Codex worktree: when there is no active owner or conflicting claim, treat those changes as the unfinished Codex slice, claim it, finish it, test it and push it. Preserve all existing edits; never discard, overwrite or silently bundle unrelated work. Mike explicitly authorized this recovery on 25 October 2026 after repeated no-progress iterations. If another owner is active, leave their files untouched and choose a non-overlapping slice. Do not spend another iteration merely repeating the same ownership question.
    - Otherwise run `git -C <worktree> fetch -q && git -C <worktree> checkout -q --detach origin/main`.
 2. **Read the state.** Read `STATE.md`. If it is missing or older than main by more than 20 commits, rebuild the backlog first (step 3) and make that the slice.
 3. **Backlog (when rebuilding).**
