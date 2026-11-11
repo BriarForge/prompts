@@ -12,6 +12,7 @@ Every folder is a category, and a prompt's `category:` frontmatter matches its t
 
 - `coding/`: generic build, review, debug and refactor prompts for any repo
   - `coding/orchestration/`: multi-agent and coordinator/worker prompts
+  - `coding/autonomous/`: prompts that hand the agent standing ownership of a repo or app (it decides what to build and how, audits the whole project, and keeps improving it)
   - `coding/xerahs/`: XerahS-specific prompts (bug fixes, features, loops, sweeps)
   - `coding/sharex/`: ShareX-specific prompts
 - `team-config/`: prompts about the agent team itself (model inventory, cron jobs, plugin review, architecture migrations)

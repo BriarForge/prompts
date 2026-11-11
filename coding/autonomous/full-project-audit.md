@@ -1,6 +1,6 @@
 ---
 tags: [audit, cleanup, codebase, review, reusable]
-category: coding
+category: autonomous
 version: 1
 last-used: 2026-11-10
 ---

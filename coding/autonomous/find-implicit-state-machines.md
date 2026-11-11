@@ -1,6 +1,6 @@
 ---
 tags: [state-machine, architecture, refactor, ux, dx, ax, reusable]
-category: coding
+category: autonomous
 version: 1
 last-used: 2026-11-10
 ---
