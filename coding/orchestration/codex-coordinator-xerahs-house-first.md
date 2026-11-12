@@ -1,7 +1,7 @@
 ---
 tags: [xerahs, codex, grok, minimax, orchestration, house-first]
 category: coding
-version: 1
+version: 2
 last-used: 2026-11-13
 ---
 
@@ -32,10 +32,10 @@ Tests protect the behavior being built. Prefer a test of capture through its rea
 Assign by task, then review
 
 - Codex owns architecture, cross-cutting changes, shared files, difficult state or concurrency logic, contract interpretation, and final integration.
-- Grok implements bounded modules and substantial tests, investigates reproducible bugs, and independently reviews changes it did not write.
+- Grok/Sofia is reserved for work the owner explicitly assigns. When the owner winds Sofia down, let her current tasks finish and park her. Assign no further work until the owner reactivates her.
 - MiniMax handles small mechanical edits, explicit UI messages, straightforward test cases, and narrowly specified helpers. Give it exact inputs, outputs, files, and commands. Keep policy, permissions, credentials, architecture, concurrency, and memory-safety decisions with Codex.
 
-Use a few workers when their work is independent. Keep them assigned useful work while the mission is active. Do not add agents or review stages to fill capacity. Keep shared CMake, controller integration, graph writes, and the main build with one coordinator unless you explicitly transfer ownership.
+The active team is Codex and MiniMax/Nadia. Codex takes over implementation and review after Sofia finishes her current assignments. Use a few available workers when their work is independent. Keep them assigned useful work while the mission is active. Do not add agents or review stages to fill capacity. Keep shared CMake, controller integration, graph writes, and the main build with one coordinator unless you explicitly transfer ownership.
 
 Every brief includes the goal, applicable contract clauses, allowed files, forbidden files, existing APIs to reuse, observable acceptance criteria, verification commands, and required proof. Include any needed test/build edits in the scope or identify the coordinator who will register them. Workers leave changes uncommitted and do not change policy, dependencies, credentials, live user settings, or another worker's files without an explicit assignment.
 
