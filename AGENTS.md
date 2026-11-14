@@ -38,6 +38,7 @@ When the user asks to "save a prompt" (or equivalent phrasing such as "store thi
    - Optional "# Notes" section after the code block
 4. Do not overwrite existing files unless the user explicitly requests an update.
 5. After creating the file, stage and commit using the correct wrapper (`git-aoife commit -m "prompt: add <name>"` or similar) and push.
-6. Report the created file path and commit summary back to the user.
+6. Add a row for the new prompt to the Catalog in `README.md` and set `category:` to the folder name (see Rules in `README.md`).
+7. Report the created file path and commit summary back to the user.
 
 This keeps the library organized, searchable, and version-controlled for recurring prompts.

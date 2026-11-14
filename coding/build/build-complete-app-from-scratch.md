@@ -1,6 +1,6 @@
 ---
 tags: [fullstack, architecture, greenfield, reusable]
-category: coding
+category: build
 version: 1
 ---
 

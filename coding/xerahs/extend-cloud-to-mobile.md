@@ -33,7 +33,7 @@ Constraints: reuse each platform's architecture; src/mobile only; behaviour-pres
 ```
 
 # Notes
-- Blends patterns from coding/{build-complete-app-from-scratch, design-and-build-scalable-system, build-production-ui-components, multi-agent-workflow, xerahs-prompt-creator}.
+- Blends patterns from coding/build/{build-complete-app-from-scratch, design-and-build-scalable-system, build-production-ui-components}, coding/orchestration/multi-agent-workflow and skills/xerahs-prompt-creator.
 - Production mobile = src/mobile/. Experimental = src/mobile-experimental/. Out of scope.
 - 1995 chars in the fenced body (under the 2k paste cap).
 - Stays under coding/xerahs/ (repo path, develop, AGENTS.md, no new branches).

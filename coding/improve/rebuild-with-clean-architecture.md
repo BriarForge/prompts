@@ -1,6 +1,6 @@
 ---
 tags: [clean-architecture, refactor, soa, reusable]
-category: coding
+category: improve
 version: 1
 ---
 

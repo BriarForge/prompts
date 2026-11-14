@@ -1,6 +1,6 @@
 ---
 tags: [frontend, ui, components, a11y, reusable]
-category: coding
+category: build
 version: 1
 ---
 

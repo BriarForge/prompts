@@ -1,6 +1,6 @@
 ---
 tags: [scope, sw, requirements, reusable]
-category: coding
+category: build
 version: 1
 ---
 

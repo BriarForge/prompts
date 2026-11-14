@@ -1,6 +1,6 @@
 ---
 tags: [sharex, loop, cross-platform, agent-agnostic, reusable]
-category: coding
+category: sharex
 version: 2
 last-used: 2026-11-04
 ---

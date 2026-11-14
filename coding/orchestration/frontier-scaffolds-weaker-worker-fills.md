@@ -1,6 +1,6 @@
 ---
 tags: [orchestration, delegation, scaffolding, stubs, minimax, mcode, opus, worker, code-review, reusable]
-category: coding
+category: orchestration
 version: 1
 last-used: 2026-11-15
 ---
@@ -47,4 +47,4 @@ Done means: the gate passes on your own run including holdout tests, you have re
 - Full method, templates and the gate script live in the public skill `scaffold-delegate` in `BriarForge/skills` (`SKILL.md`, `references/work-order.md`, `references/scaffold-patterns.md`, `references/worker-adapters.md`, `references/research.md`, `scripts/gate.sh`). This prompt is the self-contained version for coordinators without the skill installed (Codex, T3 Code, Hermes).
 - Basis: Cursor's planner/worker swarm (cheap workers match frontier results when intent is specified precisely), Planning-after-Trial (cheap model tries first, strong model plans only on failure), Anthropic's subagent-brief findings, Aider architect/editor results. Sources in the skill's `references/research.md`.
 - Tested 2026-11-15 with MiniMax M3 (`mcode` 0.7.4): two stubs plus 17 visible tests, done in about 5 minutes, passed the gate and the unseen holdout tests; diff review still found unrequested float/bool coercion, which is why step 8 asks for a full read.
-- Related: [Opus orchestrator with MiniMax-first explorer](opus-orchestrator-mcode-explorer.md), [Codex coordinator with Grok workers](codex-coordinator-grok-workers.md), [Codex coordinates XerahS, house first](codex-coordinator-xerahs-house-first.md) (its MiniMax role is the same idea in brief).
+- Related: [Opus orchestrator with MiniMax-first explorer](opus-orchestrator-mcode-explorer.md), [Codex coordinator with Grok workers](codex-coordinator-grok-workers.md), [Codex coordinates XerahS, house first](../xerahs/codex-coordinator-xerahs-house-first.md) (its MiniMax role is the same idea in brief).

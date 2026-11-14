@@ -13,7 +13,7 @@ Turn raw XerahS user feedback, bug reports, or feature asks into paste-ready reu
 
 - User says: "prompt for this XerahS feedback", "enhance this bug report", "make a paste-ready XerahS prompt", "turn this into a reusable prompt".
 - Input is raw feedback / bug / feature ask that needs to become a reusable, fenced prompt under `coding/xerahs/`.
-- Not for: skills (use `hermes-agent-skill-authoring`); single-shot chat replies with no intent to save; prompts about other products (drop into flat `coding/`); moving out of `coding/xerahs/` without explicit user direction.
+- Not for: skills (use `hermes-agent-skill-authoring`); single-shot chat replies with no intent to save; prompts about other products (put them in the matching `coding/<intent>/` folder); moving out of `coding/xerahs/` without explicit user direction.
 
 ## Inputs
 
@@ -25,7 +25,7 @@ Turn raw XerahS user feedback, bug reports, or feature asks into paste-ready reu
 ## Library conventions
 
 - Canonical home: `/Users/mike/Projects/BriarForge/prompts/`. Chat workspace `AI/...` is for artefacts only — never save prompts there.
-- Product-specific XerahS prompts go under `coding/xerahs/<kebab>.md`. Only generalize to flat `coding/` when the user says it's reusable beyond XerahS.
+- Product-specific XerahS prompts go under `coding/xerahs/<kebab>.md`. Only generalize to `coding/build/` or `coding/improve/` when the user says it's reusable beyond XerahS.
 - File shape: frontmatter (`tags`, `category: xerahs`, `version`) → H1 title → fenced ` ```text ` body → `# Notes` outside the fence. See `reusable-prompt-files` for the full library rules.
 - Char cap applies to the **fenced body only**. Frontmatter and `# Notes` do not count. After trim, update the size hint in `# Notes` to match.
 
@@ -42,7 +42,7 @@ Turn raw XerahS user feedback, bug reports, or feature asks into paste-ready reu
 2. **Draft the prompt body.** Keep feedback verbatim in quotes. Blend senior-dev discipline (root-cause, no band-aids, deliverables, constraints) with XerahS-specific gates (repo, branch, AGENTS.md, `dotnet build`, wrapper). Do not invent scope, stack, or symptoms the user didn't state.
 3. **Length-gate.** If the user gave a cap, measure `text.split("```text",1)[1].split("```",1)[0].strip()`. Trim until under cap, then update the size hint in `# Notes`.
 4. **Write the file.** Frontmatter, H1, fenced body, `# Notes` outside the fence. Use the templates below.
-5. **Commit via wrapper, exact paths only.** `git-aoife add coding/xerahs/<name>.md` (or `git add coding/<name>.md` for generalized prompts). Inspect `git-aoife status --short` and leave unrelated dirty files alone (`fable5/runs.log`, `team-config/*`). Commit `prompt: add <name>`, push, verify with `git-aoife log -1 --name-status` before claiming the SHA.
+5. **Commit via wrapper, exact paths only.** `git-aoife add coding/xerahs/<name>.md` (or `git add coding/<intent>/<name>.md` for generalized prompts). Inspect `git-aoife status --short` and leave unrelated dirty files alone (`fable5/runs.log`, `team-config/*`). Commit `prompt: add <name>`, push, verify with `git-aoife log -1 --name-status` before claiming the SHA.
 6. **Reply once.** Short message: path + commit SHA. Include the fenced body in chat only if the user asked for a paste.
 
 ## Templates
@@ -57,22 +57,22 @@ Turn raw XerahS user feedback, bug reports, or feature asks into paste-ready reu
 ## Related
 
 - `reusable-prompt-files` — library shape (frontmatter, fence, Notes, char-cap measurement, subfolder conventions). This skill layers XerahS-specific defaults and the feedback→enhanced-prompt flow on top of it.
-- Flat `coding/` holds generic senior-dev shapes (`debug-like-a-senior-engineer.md`, `optimize-for-performance.md`, etc.). Blend their tone into XerahS-specific prompts when relevant.
+- `coding/build/` and `coding/improve/` hold generic senior-dev shapes (`improve/debug-like-a-senior-engineer.md`, `improve/optimize-for-performance.md`, etc.). Blend their tone into XerahS-specific prompts when relevant.
 
 ## Pitfalls
 
 - **Verbatim drift.** Paraphrasing the user's feedback changes the brief. Quote it unchanged inside the prompt.
 - **Inventing repro.** Only use symptoms, logs, and steps the user actually provided. Open gates for unknowns.
-- **Wrong home.** Dropping a XerahS prompt into `AI/prompts/` or flat `coding/` instead of `coding/xerahs/` (until the user says it's reusable beyond XerahS).
+- **Wrong home.** Dropping a XerahS prompt into `AI/prompts/` or a generic `coding/` folder instead of `coding/xerahs/` (until the user says it's reusable beyond XerahS).
 - **Char count on the wrong span.** Counting the whole file instead of the fenced body. Frontmatter + `# Notes` don't count toward a paste cap.
 - **Staging noise.** `git-aoife add .` pulls `fable5/runs.log` and `team-config/*` into the commit. Stage explicit paths only.
 - **Claiming a SHA before push.** Always verify with `git-aoife log -1 --name-status` before telling the user the commit landed.
-- **Generalizing out of `coding/xerahs/` without being asked.** Only move to flat `coding/` when the user explicitly says it's reusable beyond XerahS.
+- **Generalizing out of `coding/xerahs/` without being asked.** Only move to `coding/build/` or `coding/improve/` when the user explicitly says it's reusable beyond XerahS.
 - **Discord spam.** Multiple replies, edit/delete loops, or paste blocks before the commit lands. One reply, after `git log` proves the commit, with the fenced body only if a paste was requested.
 
 ## Verification
 
-- File exists at `coding/xerahs/<name>.md` (or flat `coding/<name>.md` if generalized).
+- File exists at `coding/xerahs/<name>.md` (or `coding/<intent>/<name>.md` if generalized).
 - Frontmatter parses; fenced body is the only copy-pasteable region; `# Notes` is outside the fence.
 - Char count (fenced body) under any cap the user gave; size hint in `# Notes` matches reality.
 - `git-aoife log -1 --name-status` shows only the new prompt path under `coding/`.

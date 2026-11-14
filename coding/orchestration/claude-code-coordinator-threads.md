@@ -1,6 +1,6 @@
 ---
 tags: [claude-code, multi-agent, orchestration, threads, code-review, reusable]
-category: coding
+category: orchestration
 version: 1
 last-used: 2026-11-01
 ---

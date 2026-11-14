@@ -8,20 +8,111 @@ Store reusable, high-value prompts in a structured, version-controlled Markdown 
 
 ## Structure
 
-Every folder is a category, and a prompt's `category:` frontmatter matches its top-level folder (`xerahs` for `coding/xerahs/`).
+Folders answer "what do I want the agent to do?" first, and "for which product?" second.
 
-- `coding/`: generic build, review, debug and refactor prompts for any repo
-  - `coding/orchestration/`: multi-agent and coordinator/worker prompts
-  - `coding/autonomous/`: prompts that hand the agent standing ownership of a repo or app (it decides what to build and how, audits the whole project, and keeps improving it)
-  - `coding/xerahs/`: XerahS-specific prompts (bug fixes, features, loops, sweeps)
-  - `coding/sharex/`: ShareX-specific prompts
-- `team-config/`: prompts about the agent team itself (model inventory, cron jobs, plugin review, architecture migrations)
-- `finance/`: stock and investment analysis prompts
-- `writing/`: rewriting and tone prompts
+- `coding/build/`: start or add something new (app, system, UI components, CLI/plugin, scoping before a build)
+- `coding/improve/`: work on existing code (debug, optimise, refactor, understand)
+- `coding/autonomous/`: hand the agent standing ownership of a repo (it decides, audits and keeps improving)
+- `coding/orchestration/`: one agent coordinating others (coordinator/worker, delegation, review)
+- `coding/xerahs/`, `coding/sharex/`: anything that names that product or its repo, whatever the task type
+- `team-config/`: prompts about the agent team itself (model inventory, cron jobs, standing agent jobs, plugin review)
+- `finance/`: stock and investment analysis
+- `writing/`: rewriting and tone
 - `skills/`: skills that help author prompts for this library
-- `fable5/`: the Fable 5 queue (runner script, progress file, scopes). Not a prompt category; do not move files, a cron-driven runner reads fixed paths here.
+- `fable5/`: the Fable 5 queue (runner script, progress file, scopes, run outputs). Not a prompt category; do not move files, the runner reads fixed paths here.
 
-One `.md` file per prompt, kebab-case filename. Generic prompts live in `coding/`; put a prompt in a product folder only when it names that product.
+Rules:
+
+- One `.md` file per prompt, kebab-case filename.
+- `category:` in the frontmatter is the name of the folder the file sits in (`build`, `orchestration`, `xerahs`, `finance`, ...).
+- A prompt goes in a product folder only when it names that product or its repo; otherwise it goes in the task folder.
+- Add every new prompt to the catalog below in the same commit.
+
+## Catalog
+
+### coding/build
+| Prompt | Use when |
+|---|---|
+| [Build complete app from scratch](coding/build/build-complete-app-from-scratch.md) | New production app: architecture first, then the minimal scalable version |
+| [Design and build a scalable system](coding/build/design-and-build-scalable-system.md) | Systems-architect design for a product, then the minimal production build |
+| [Build production UI components](coding/build/build-production-ui-components.md) | Reusable, accessible frontend components |
+| [First-party CLI or plugin](coding/build/first-party-cli-or-plugin.md) | Integrate a host product with OpenClaw, Hermes or another agent as a CLI or plugin |
+| [SW### Scope-Until-Build](coding/build/sw-scope-until-build.md) | Scope a new project in conversation; building stays gated until scope is agreed |
+
+### coding/improve
+| Prompt | Use when |
+|---|---|
+| [Debug like a senior engineer](coding/improve/debug-like-a-senior-engineer.md) | Production bug: step-by-step root cause, then the fix |
+| [Optimize for performance](coding/improve/optimize-for-performance.md) | Speed, memory and scale work on existing code |
+| [Rebuild with clean architecture](coding/improve/rebuild-with-clean-architecture.md) | Refactor toward clean architecture |
+| [Understand and refactor unfamiliar code](coding/improve/understand-and-refactor-unfamiliar-code.md) | Map a large unfamiliar codebase before changing it |
+
+### coding/autonomous
+| Prompt | Use when |
+|---|---|
+| [The codebase is yours](coding/autonomous/codebase-ownership.md) | Give the agent ownership of a repo's purpose and design |
+| [Find implicit state machines](coding/autonomous/find-implicit-state-machines.md) | Find and make explicit the hidden state machines in an app |
+| [Full project audit](coding/autonomous/full-project-audit.md) | Read everything, fix what is certain, list the rest |
+| [Own it, find the state machines, fix what's sure](coding/autonomous/ownership-state-machine-audit.md) | One maintenance session combining the three above |
+
+### coding/orchestration
+| Prompt | Use when |
+|---|---|
+| [Frontier scaffolds, weaker worker fills](coding/orchestration/frontier-scaffolds-weaker-worker-fills.md) | A strong model writes stubs and tests; MiniMax or another cheaper agent fills the bodies (skill: `scaffold-delegate`) |
+| [Opus orchestrator with MiniMax-first explorer](coding/orchestration/opus-orchestrator-mcode-explorer.md) | Opus plans and signs off; search via `mcode`, fixer and checker subagents |
+| [Claude Code coordinator with thread workers](coding/orchestration/claude-code-coordinator-threads.md) | Opus coordinator, parallel Sonnet threads, one PR each |
+| [Codex coordinator with Grok workers](coding/orchestration/codex-coordinator-grok-workers.md) | Codex coordinates real Grok subagents in T3 Code |
+| [Multi-agent workflow](coding/orchestration/multi-agent-workflow.md) | One model role-plays architect, engineer, reviewer and optimiser in sequence |
+
+### coding/xerahs
+| Prompt | Use when |
+|---|---|
+| [Codex coordinates XerahS, house first](coding/xerahs/codex-coordinator-xerahs-house-first.md) | Codex leads the Linux implementation with MiniMax workers, foundation first |
+| [XerahS multi-agent orchestrator](coding/xerahs/xerahs-multi-agent-orchestrator.md) | Opus leads XerahS development with worker agents |
+| [Grok leads Codex on XerahS](coding/xerahs/grok-leads-codex.md) | Grok supervises Codex slices on a 30-minute cycle |
+| [XerahS loop](coding/xerahs/xerahs-loop.md) | Agent-agnostic one-slice-per-run loop |
+| [XerahS sweep](coding/xerahs/xerahs-sweep-prompt.md) | Review sweep driven by the `xerahs-hourly-sweep` skill |
+| [Derive /goal from session](coding/xerahs/derive-goal-from-session.md) | Turn a session's intent into a self-contained `/goal` prompt |
+| [Feature work: systems-thinking](coding/xerahs/feature-systems-thinking.md) | Research, compare approaches and write a proposal before building a feature |
+| [Extend XerahS Cloud to mobile](coding/xerahs/extend-cloud-to-mobile.md) | Bring Cloud features to the iOS and Android apps |
+| [Improve Amazon S3](coding/xerahs/improve-amazon-s3.md) | Improve the existing S3/AWS uploader |
+| [xbackbone integration](coding/xerahs/xbackbone-integration.md) | Add an xbackbone destination modelled on S3 |
+| [First-party CLI or plugin (XerahS)](coding/xerahs/first-party-cli-or-plugin.md) | XerahS variant of the generic CLI/plugin prompt |
+| [ShareX.VideoEditor end-to-end restructure](coding/xerahs/sharex-videoeditor-e2e-restructure.md) | Make the video editor submodule work end to end inside XerahS |
+| [Startup-minimize bug fix](coding/xerahs/startup-minimize-bug-fix.md) | Worked example of a bug report turned into a fix prompt |
+
+### coding/sharex
+| Prompt | Use when |
+|---|---|
+| [ShareX cross-platform loop](coding/sharex/sharex-loop.md) | One slice per run on the ShareX cross-platform branch |
+
+### team-config
+| Prompt | Use when |
+|---|---|
+| [Agent model inventory](team-config/agent-model-inventory.md) | List each agent's provider and model from its config |
+| [List agent cron jobs by frequency](team-config/list-agent-cron-jobs-by-frequency.md) | Inventory an agent's cron jobs by schedule |
+| [Migrate cronjobs to skill-first](team-config/migrate-cronjobs-to-skill-first.md) | Move cron job logic into skills |
+| [Review and adopt a coding plugin](team-config/review-and-adopt-coding-plugin.md) | Vet a plugin, install it if safe, explain the effect |
+| [AI breaking news lane](team-config/ai-breaking-news-lane.md) | Source of the standing news-watch cron job |
+
+### finance
+| Prompt | Use when |
+|---|---|
+| [Comprehensive stock analysis](finance/comprehensive-stock-analysis.md) | Full single-stock review |
+| [Detailed financial analysis](finance/detailed-financial-analysis.md) | Statements and ratios in depth |
+| [Earnings report analysis](finance/earnings-report-analysis.md) | Read a quarterly or annual result |
+| [Stock valuation](finance/stock-valuation.md) | Estimate intrinsic value |
+| [Growth potential analysis](finance/growth-potential-analysis.md) | Growth drivers and runway |
+| [Competitive advantage analysis](finance/competitive-advantage-analysis.md) | Moat assessment |
+| [Investment risk analysis](finance/investment-risk-analysis.md) | Downside and risk factors |
+| [Institutional investor perspective](finance/institutional-investor-perspective.md) | How a fund manager would view it |
+| [Optimistic vs pessimistic analyst debate](finance/optimistic-pessimistic-analyst-debate.md) | Bull and bear case side by side |
+
+### writing
+| Prompt | Use when |
+|---|---|
+| [Rewrite as human](writing/rewrite-as-human.md) | Make text sound like a person wrote it |
+| [Rewrite so it no longer reads like AI](writing/rewrite-no-longer-reads-like-ai.md) | Strip AI tells from a draft |
 
 ## Adding a prompt
 

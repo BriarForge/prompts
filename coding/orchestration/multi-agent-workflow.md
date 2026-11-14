@@ -1,6 +1,6 @@
 ---
 tags: [multi-agent, workflow, delegation, reusable]
-category: coding
+category: orchestration
 version: 1
 ---
 

@@ -1,6 +1,6 @@
 ---
 tags: [coding, claude-code, subagents, orchestration, mcode, minimax, haiku, hooks, reusable]
-category: coding
+category: orchestration
 version: 1
 last-used: 2026-11-09
 ---

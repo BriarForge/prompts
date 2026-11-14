@@ -1,6 +1,6 @@
 ---
 tags: [cli, plugin, integration, reusable]
-category: coding
+category: build
 version: 2
 ---
 

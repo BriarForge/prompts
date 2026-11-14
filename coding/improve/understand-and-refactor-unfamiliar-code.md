@@ -1,6 +1,6 @@
 ---
 tags: [refactor, architecture, code-review, reusable]
-category: coding
+category: improve
 version: 1
 ---
 

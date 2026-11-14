@@ -1,6 +1,6 @@
 ---
 tags: [codex, grok, orchestration, subagents, parallel, code-review]
-category: coding
+category: orchestration
 version: 1
 last-used: 2026-11-12
 ---

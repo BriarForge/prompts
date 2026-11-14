@@ -1,6 +1,6 @@
 ---
 tags: [xerahs, codex, grok, minimax, orchestration, house-first]
-category: coding
+category: xerahs
 version: 2
 last-used: 2026-11-13
 ---
@@ -74,6 +74,6 @@ Continue toward the full mission until it is proven complete or the owner pauses
 
 ## Adaptation
 
-Adapted from [the Opus-led XerahS prompt](../xerahs/xerahs-multi-agent-orchestrator.md) and [the Codex/Grok coordinator](codex-coordinator-grok-workers.md). The original prompts remain unchanged.
+Adapted from [the Opus-led XerahS prompt](xerahs-multi-agent-orchestrator.md) and [the Codex/Grok coordinator](../orchestration/codex-coordinator-grok-workers.md). The original prompts remain unchanged.
 
 The Codex version preserves the house-first sequence and lead-owned integration. It replaces detached worktrees and PID polling with the current main-branch and delegation rules, adds reviewed MiniMax tasks, and assigns verified Git identities by writer.
