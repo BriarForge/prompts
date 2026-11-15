@@ -94,6 +94,7 @@ Rules:
 | [Migrate cronjobs to skill-first](team-config/migrate-cronjobs-to-skill-first.md) | Move cron job logic into skills |
 | [Review and adopt a coding plugin](team-config/review-and-adopt-coding-plugin.md) | Vet a plugin, install it if safe, explain the effect |
 | [AI breaking news lane](team-config/ai-breaking-news-lane.md) | Source of the standing news-watch cron job |
+| [Claude Code model team](team-config/claude-code-model-team-setup.md) | Set up Fable advisor, Sonnet main, Haiku subagents and an Opus reviewer at user level on any machine |
 
 ### finance
 | Prompt | Use when |
