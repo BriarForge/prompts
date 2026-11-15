@@ -46,6 +46,9 @@ Rules:
 | [Optimize for performance](coding/improve/optimize-for-performance.md) | Speed, memory and scale work on existing code |
 | [Rebuild with clean architecture](coding/improve/rebuild-with-clean-architecture.md) | Refactor toward clean architecture |
 | [Understand and refactor unfamiliar code](coding/improve/understand-and-refactor-unfamiliar-code.md) | Map a large unfamiliar codebase before changing it |
+| [Split long functions](coding/improve/split-long-functions.md) | One function is too long: split it with Extract Function |
+| [Merge duplicated code](coding/improve/merge-duplicated-code.md) | You make the same fix in several places: merge into one function |
+| [Rename unclear names](coding/improve/rename-unclear-names.md) | You cannot tell what something does from its name: rename it |
 
 ### coding/autonomous
 | Prompt | Use when |
