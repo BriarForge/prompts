@@ -7,7 +7,7 @@ last-used: 2026-11-18
 
 # Claude Code model team: Opus advises, Sonnet builds, Haiku searches, Opus reviews
 
-Variant of [claude-code-model-team-setup](claude-code-model-team-setup.md) (Fable advisor) for accounts without Fable, plans where Fable bills to usage credits, or when you want lower advisor cost. Same files, so running either prompt switches a machine cleanly between the two setups.
+Variant of [claude-code-fable-advisor-setup](claude-code-fable-advisor-setup.md) (Fable advisor) for accounts without Fable, plans where Fable bills to usage credits, or when you want lower advisor cost. Same files, so running either prompt switches a machine cleanly between the two setups.
 
 Paste into Claude Code on any machine. It sets up, at user level (all projects):
 
@@ -135,7 +135,7 @@ Summarise: version, provider, the settings diff (or "already set"), the files yo
 - `/advisor off` (or `CLAUDE_CODE_DISABLE_ADVISOR_TOOL=1` to disable the tool entirely)
 - `/model opus` (or remove "model" from settings)
 - restore the settings backup, delete ~/.claude/agents/reviewer.md and ~/.claude/rules/model-team.md
-- to switch to the Fable advisor instead, run the claude-code-model-team-setup prompt.
+- to switch to the Fable advisor instead, run the claude-code-fable-advisor-setup prompt.
 Also say plainly that every plain `claude` launch now defaults to Sonnet, including scripts and agents that don't pass --model.
 ```
 
