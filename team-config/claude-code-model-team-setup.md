@@ -129,7 +129,7 @@ Also say plainly that every plain `claude` launch now defaults to Sonnet, includ
 - What is real (checked against code.claude.com docs, 2026-11-15): the advisor tool (`/advisor`, `advisorModel`, `--advisor`, which `claude --help` does not list), the pairing table, `CLAUDE_CODE_SUBAGENT_MODEL`, agent `model:` frontmatter, user-level `~/.claude/rules/`.
 - What is not a built-in feature, despite the viral "Fable thinks, Sonnet builds, Opus reviews, Haiku coordinates" post: there is no Haiku coordinator mode (Sonnet stays the main model and spawns Haiku subagents), and no Opus reviewer setting (it is a custom agent). The post's "3.4x cheaper" and "198 cases" numbers could not be found in Anthropic's docs.
 - Cost model: each advisor call re-reads the full transcript at the advisor's rates (not cached), so the rule restricts calls to the three decision points. Toggling `/advisor` does not invalidate the main model's prompt cache; switching `/model` does.
-- No Fable access: use `opus` as the advisor. Same rule file, just with "Opus (advisor)" in place of "Fable (advisor)".
+- No Fable access: use the [Opus advisor variant](claude-code-opus-advisor-setup.md) instead. It splits the done-check so Opus isn't paid twice (advisor and reviewer) at the end of each task.
 
 ## v2 changes (run on Windows 11, Claude Code 2.1.325, 2026-11-16)
 

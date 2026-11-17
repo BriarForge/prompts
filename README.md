@@ -98,6 +98,7 @@ Rules:
 | [Review and adopt a coding plugin](team-config/review-and-adopt-coding-plugin.md) | Vet a plugin, install it if safe, explain the effect |
 | [AI breaking news lane](team-config/ai-breaking-news-lane.md) | Source of the standing news-watch cron job |
 | [Claude Code model team](team-config/claude-code-model-team-setup.md) | Set up Fable advisor, Sonnet main, Haiku subagents and an Opus reviewer at user level on any machine |
+| [Claude Code model team, Opus advisor](team-config/claude-code-opus-advisor-setup.md) | Same team with Opus as advisor: no Fable access, no usage-credits billing, or lower cost. Reviewer takes the done-check so Opus isn't paid twice |
 
 ### finance
 | Prompt | Use when |
