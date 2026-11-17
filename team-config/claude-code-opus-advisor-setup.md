@@ -2,7 +2,7 @@
 tags: [claude-code, advisor, opus, sonnet, haiku, subagents, model-config, cost, reusable]
 category: team-config
 version: 1
-last-used: 2026-11-20
+last-used: 2026-11-18
 ---
 
 # Claude Code model team: Opus advises, Sonnet builds, Haiku searches, Opus reviews
@@ -46,12 +46,12 @@ For code changes, the reviewer replaces the advisor's "is this done?" check. The
 2. Provider: the advisor works only on the Anthropic API (subscription or API key), Claude Platform on AWS, or Claude Models on Google Cloud (Anthropic managed). It does NOT work on Amazon Bedrock, Google Cloud's Agent Platform (Vertex), or Microsoft Foundry. Check env and settings for CLAUDE_CODE_USE_BEDROCK / CLAUDE_CODE_USE_VERTEX / CLAUDE_CODE_USE_FOUNDRY and ANTHROPIC_BASE_URL (a gateway may strip the advisor tool). Also check ANTHROPIC_MODEL and ANTHROPIC_DEFAULT_SONNET_MODEL / _OPUS_MODEL / _HAIKU_MODEL / _FABLE_MODEL: these remap the aliases, so with a non-Anthropic gateway `sonnet`, `opus` and `haiku` silently point at non-Claude models and the whole team setup is meaningless. Report what you find (masked); if any are set, ask me whether that is intended before going on.
 3. Feature flags: the advisor needs feature-flag fetching. Check the shell env and the settings `env` block for CLAUDE_CODE_DISABLE_FEATURE_FLAGS, DISABLE_GROWTHBOOK, CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC, DISABLE_TELEMETRY, DO_NOT_TRACK, and CLAUDE_CODE_DISABLE_ADVISOR_TOOL. If any is set, tell me it blocks the advisor and ask before removing it. The fetch is also skipped on third-party providers and in Claude apps gateway sessions.
 4. Model allowlist: if settings contain `availableModels` (often set by an organization), check that it allows sonnet, opus and haiku. Claude Code will not invoke an advisor the allowlist excludes. If Opus is excluded, use `sonnet` as the advisor instead (Sonnet 5.5 accepts Sonnet 5.5 as advisor) and tell me.
-5. Look at ~/.claude/settings.json, ~/.claude/CLAUDE.md (note if it is a symlink to a file shared with other agents), ~/.claude/rules/, and ~/.claude/agents/. Report anything that already sets `model`, `advisorModel`, `CLAUDE_CODE_SUBAGENT_MODEL`, or an agent named `reviewer`. If ~/.claude/rules/model-team.md exists (for example from the Fable variant of this prompt), show it to me and point out any lines that were added by hand, such as per-repo exceptions; carry those over in step 4 unless I say otherwise.
+5. Look at ~/.claude/settings.json, ~/.claude/CLAUDE.md (note if it is a symlink to a file shared with other agents), ~/.claude/rules/, and ~/.claude/agents/. Report anything that already sets `model`, `advisorModel`, `CLAUDE_CODE_SUBAGENT_MODEL`, or an agent named `reviewer`. If ~/.claude/rules/model-team.md exists (for example from the Fable variant of this prompt), show it to me and point out any lines that were added by hand, such as per-repo exceptions; carry those over in section 4 unless I say otherwise.
 6. Existing backups: list ~/.claude/settings.json.bak-* and diff the newest against the current settings (masking secrets as in step 0). A recent backup that differs a lot usually means someone changed the setup by hand shortly before. Tell me what changed and ask whether it is intended. If any backup holds a plaintext token or API key, say so (without printing it) and recommend deleting that backup and rotating the key.
 7. Overrides: project settings (`.claude/settings.json`, `.claude/settings.local.json`) override user settings, so a repo that sets `model` will not use Sonnet. Mention any you find in the current directory, plus a stray `~/.claude/.claude/settings.json` (created when Claude Code is run with ~/.claude as the working directory; harmless elsewhere).
 
 ## 2. Back up, show the diff, then apply
-1. If the settings already hold exactly the values below, say so, skip the backup, and go to step 3. Otherwise copy ~/.claude/settings.json to ~/.claude/settings.json.bak-<YYYYMMDD-HHMMSS> (create an empty `{}` settings file first if none exists).
+1. If the settings already hold exactly the values below, say so, skip steps 1–3 of this section (no backup, no diff), and continue at step 4. Otherwise copy ~/.claude/settings.json to ~/.claude/settings.json.bak-<YYYYMMDD-HHMMSS> (create an empty `{}` settings file first if none exists).
 2. Add or set exactly these keys, leaving every other key alone:
    - "model": "sonnet"
    - "advisorModel": "opus"

@@ -2,7 +2,7 @@
 tags: [claude-code, advisor, fable, opus, sonnet, haiku, subagents, model-config, cost, reusable]
 category: team-config
 version: 2
-last-used: 2026-11-16
+last-used: 2026-11-18
 ---
 
 # Claude Code model team: Fable advises, Sonnet builds, Opus reviews, Haiku searches
@@ -37,7 +37,7 @@ Set up a cost-saving model team for Claude Code at the USER level so it applies 
 1. `claude --version`. Fable 5.2 as advisor needs v2.1.321 or later; Haiku 5.5 as main or advisor needs v2.1.293 or later. If older, tell me to run `claude update` and stop.
 2. Provider: the advisor works only on the Anthropic API (subscription or API key), Claude Platform on AWS, or Claude Models on Google Cloud (Anthropic managed). It does NOT work on Amazon Bedrock, Google Cloud's Agent Platform (Vertex), or Microsoft Foundry. Check env and settings for CLAUDE_CODE_USE_BEDROCK / CLAUDE_CODE_USE_VERTEX / CLAUDE_CODE_USE_FOUNDRY and ANTHROPIC_BASE_URL (a gateway may strip the advisor tool). Also check ANTHROPIC_MODEL and ANTHROPIC_DEFAULT_SONNET_MODEL / _OPUS_MODEL / _HAIKU_MODEL / _FABLE_MODEL: these remap the aliases, so with a non-Anthropic gateway (for example a third-party "Anthropic-compatible" endpoint) `sonnet`, `opus` and `haiku` silently point at non-Claude models and the whole team setup is meaningless. Report what you find (masked); if any are set, ask me whether that is intended before going on.
 3. Feature flags: the advisor needs feature-flag fetching. Check the shell env and the settings `env` block for CLAUDE_CODE_DISABLE_FEATURE_FLAGS, DISABLE_GROWTHBOOK, CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC, DISABLE_TELEMETRY, DO_NOT_TRACK, and CLAUDE_CODE_DISABLE_ADVISOR_TOOL. If any is set, tell me it blocks the advisor and ask before removing it. The fetch is also skipped on third-party providers and in Claude apps gateway sessions.
-4. Fable access: ask me whether this account has Fable. If not, use `opus` as the advisor instead of `fable` everywhere below (Sonnet 5.5 accepts Opus 5+ as advisor).
+4. Fable access: ask me whether this account has Fable. If not, stop and use the claude-code-opus-advisor-setup prompt instead: swapping `opus` in here would bill Opus twice per task (advisor and reviewer).
 5. Look at ~/.claude/settings.json, ~/.claude/CLAUDE.md (note if it is a symlink to a file shared with other agents), ~/.claude/rules/, and ~/.claude/agents/. Report anything that already sets `model`, `advisorModel`, `CLAUDE_CODE_SUBAGENT_MODEL`, or an agent named `reviewer`.
 6. Existing backups: list ~/.claude/settings.json.bak-* and diff the newest against the current settings (masking secrets as in step 0). A recent backup that differs a lot usually means someone changed the setup by hand shortly before (for example removed a gateway `env` block). Tell me what changed and ask whether it is intended. If any backup holds a plaintext token or API key, say so (without printing it) and recommend deleting that backup and rotating the key.
 7. Overrides: project settings (`.claude/settings.json`, `.claude/settings.local.json`) override user settings, so a repo that sets `model` will not use Sonnet. Mention any you find in the current directory, plus a stray `~/.claude/.claude/settings.json` (created when Claude Code is run with ~/.claude as the working directory; harmless elsewhere).
