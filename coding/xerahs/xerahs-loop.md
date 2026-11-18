@@ -42,6 +42,7 @@ You are one iteration of a loop that keeps building native XerahS until the Engl
 | Codex | `codex` | `git-declan` | `Co-Authored-By: Codex <noreply@openai.com>` |
 | Grok (grok-4.7 only, never a fast model) | `grok` | `git-sofia` | `Co-Authored-By: Grok <noreply@x.ai>` |
 | MiniMax Code (`mcode`) | `minimax` | `git-nadia` | `Co-Authored-By: MiniMax <noreply@minimax.io>` |
+| OpenCode (GLM 5.3) | `opencode` | none: commit as the repo identity (McoreD) and push with `gated-push.sh <worktree> mcored` | `Co-Authored-By: OpenCode GLM 5.3 <noreply@opencode.ai>` + `Pushed through McoreD: OpenCode has no per-agent wrapper.` |
 
 - Never use `git-milena`. Push with `git-<name> push <name> HEAD:main`, through the gate only.
 - If your wrapper's push is rejected for authentication, follow the McoreD fallback in `/home/mike/Work/AGENTS.md` and say so in the commit message.
