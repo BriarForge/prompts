@@ -119,7 +119,11 @@ if ! ctest --test-dir build -j6 >>"$log" 2>&1; then
 fi
 cd "$wt"; git fetch -q origin
 [ "$(git rev-parse origin/main)" = "$base" ] || { echo "REFUSED: origin/main moved during testing; rerun"; exit 1; }
-"git-$who" push "$who" HEAD:main 2>&1 | tail -1
+if [ "$who" = mcored ]; then
+  git push https://github.com/BriarForge/XerahS.git HEAD:main 2>&1 | tail -1   # no-wrapper agents (OpenCode)
+else
+  "git-$who" push "$who" HEAD:main 2>&1 | tail -1
+fi
 echo "PUSHED $(git log --format='%h %an %s' -1)"
 ```
 ````
