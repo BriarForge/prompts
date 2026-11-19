@@ -8,7 +8,7 @@ last-used: 2026-10-24
 # XerahS loop prompt (agent-agnostic)
 
 One slice per run; any agent CLI can run it repeatedly. Example:
-`while true; do codex exec -C /home/mike/Work/BriarForge/XerahS --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check - < <this-file>; grep -q "waiting on Mike" ~/.local/state/xerahs-loop/STATE.md && break; done`
+`while true; do codex exec -C /home/mike/Work/BriarForge/XerahS --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check - < <this-file>; done`
 
 Scheduled continuation keeps ONE conversation alive instead of starting a new one per
 run: the scheduler resumes the same Codex session and injects this file again, so the
@@ -56,7 +56,7 @@ You are one iteration of a loop that keeps building native XerahS until the Engl
    - Audit every capability in `manifest.yaml` against the code and tests that exist now. Don't trust old traceability text.
    - Classify each requirement as `implemented` (has an automated test), `partial`, `not-started`, or `blocked: <reason>`.
    - Update `traceability/*.json` honestly and commit them.
-   - Write `STATE.md` with sections `## Backlog` (ranked by user value: core user flows first, then breadth, then release gates), `## Blocked on Mike`, `## Done`, `## Claims`.
+   - Write `STATE.md` with sections `## Backlog` (ranked by user value: core user flows first, then breadth, then release gates), `## Decisions` (owner blocks you resolved, with sources), `## Mike only` (Stewardship items, see below), `## Done`, `## Claims`.
 4. **Claim.** Take the top unclaimed backlog item that is small enough for one iteration and doesn't overlap any other claim (no shared files). Add `- <agent> <ISO time>: <slice> | files: <globs>` under `## Claims`, edit with a short atomic rewrite. Ignore claims older than 6 hours (stale).
 5. **Build.** Read the contract requirement text first. Then implement, with tests, following the rules below.
 6. **Self-review.** Read your whole diff as if a stranger wrote it. Check:
@@ -75,13 +75,14 @@ You are one iteration of a loop that keeps building native XerahS until the Engl
    - Exit.
 
 ## Rules (every agent, every iteration)
-- **The contract decides behaviour.** If it doesn't decide something, add it to `## Blocked on Mike` with the exact question (ROOT-ESCALATE-001). Never edit the contract to fit code. Never derive expected test values from your own implementation.
-- **Waiting on Mike; do not build, keep marked blocked:**
-  - `remove_background` (needs an approved local model);
-  - QR scanning and OCR (zxing-cpp and Tesseract are unapproved dependencies);
-  - the scroll alignment threshold value (`kScrollAlignmentThreshold` is a placeholder);
-  - human security review of the `.sxie` import and the Secret Service credential store;
-  - any release, signing, contract change, waiver or security-posture change.
+- **The contract decides behaviour.** Never edit the contract only to make code pass (ROOT-ESCALATE-001). Never derive expected test values from your own implementation.
+- **Owner blocks are decided, never waited on.** Under the Stewardship section of `AGENTS.md` the maintainer decides product direction, contract text, defaults, waivers, architecture and dependencies, and the maintainer delegates those decisions to the loop. When the contract leaves a question open, or an item says it needs approval:
+  1. Research it online first: how the leading comparable apps (ShareX itself, Flameshot, Spectacle, GNOME Screenshot, Greenshot, Snagit and the like) and the relevant standards or platform docs handle it. Cite at least two sources.
+  2. Choose the option that best serves users and is reversible, GPLv3-compatible, free and needs no account. For a dependency or model, verify its licence on its official page or model card; reject non-commercial, custom or GPL-incompatible licences outright and pick another. Prefer packages already in Arch/Debian repos.
+  3. Record the decision in the contract (SPEC text plus version bump) and in `## Decisions` of `STATE.md`, with the question, the choice, the rationale and the source links, in the same commit that builds it. Prefix the commit subject with `[Decision]`.
+  4. Build and test it like any other slice. Expected test values come from the decision and its sources, not from your code.
+- **Security reviews** required by ROOT-SECURITY-001 are done by an independent reviewer on a different model from the author (for example Claude reviewing GLM or Codex code). Request it by adding the item to `## Backlog` as `review: <files>`; do not wait for a human.
+- **Mike only** (Stewardship: these happen in his name): publishing releases, signing keys and certificates, credentials and secrets, anything that costs money, legal questions, and access to his accounts or devices. List them under `## Mike only`, then keep building around them: unsigned local builds, fake credential stores in tests, seams that take the real key later. They never stop the loop.
 - **Architecture:**
   - Blocking work starts through `app/OwnedWork.h` only. Never block or nest an event loop on the GUI thread.
   - Private JSON state uses `src/storage/PrivateJsonFile.h`.
@@ -90,15 +91,12 @@ You are one iteration of a loop that keeps building native XerahS until the Engl
   - User-visible failures carry a stable kebab-case code plus plain English.
   - Effects use `Effect.h` and `EffectSupport`: no clamping, seed-only randomness, no duplicated helpers.
 - **Foundation, then features, then guards.** No policy docs or audit write-ups without the real feature. Restructure when friction demands it, without changing behaviour (ROOT-IMPROVE-001), and prove it with tests.
-- **Dependencies and licence:** no new third-party dependency. GPLv3, with Qt linked dynamically.
+- **Dependencies and licence:** GPLv3, with Qt linked dynamically. A new dependency is an owner decision: research it, verify the licence, record it in `DEPENDENCIES.md` and `## Decisions`, and add it in the commit that uses it.
 - **Build and test** from `platforms/linux/linux-qt`: `cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug && cmake --build build -j8 && ctest --test-dir build -j6 --output-on-failure`. Every test must pass. Never disable or weaken a test.
 - **Git:** branch `main` only, pushed from your detached worktree as `HEAD:main`. Never force-push, rewrite history, create branches, bypass hooks, or touch another agent's worktree.
 
-## Loop stop condition
-If `## Backlog` contains only blocked items, or items that need a live desktop session to verify, do this:
-- write `## Loop status: waiting on Mike` at the top of `STATE.md`, with the list;
-- make no code changes;
-- exit.
+## The loop does not stop
+There is always a next slice. If the backlog looks empty or blocked, the next slice is one of: resolve the top open question as a decision (above), rebuild the backlog from a fresh audit, raise coverage of a partial requirement, or work around a `## Mike only` item behind a seam. Items that need a live desktop session to verify get an automated offscreen or private-bus test instead. Never write a "waiting on Mike" status and never exit without a slice.
 
 ## ~/.local/state/xerahs-loop/gated-push.sh (create if missing, then `chmod +x`)
 ```bash
