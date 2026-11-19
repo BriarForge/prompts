@@ -1,14 +1,14 @@
 ---
 tags: [sharex, loop, cross-platform, agent-agnostic, reusable]
 category: sharex
-version: 2
-last-used: 2026-11-04
+version: 3
+last-used: 2026-11-19
 ---
 
 # ShareX cross-platform loop prompt
 
 One slice per run, adapted from `coding/xerahs/xerahs-loop.md`. Any agent CLI can run it repeatedly, or a scheduler can resume one session and inject it again. Example:
-`while true; do claude -p "$(cat <this-file>)"; grep -q "waiting on Mike" ~/.local/state/sharex-loop/STATE.md && break; done`
+`while true; do claude -p "$(cat <this-file>)"; done`
 
 ````markdown
 You are one iteration of a loop that keeps ShareX's `cross-platform` branch complete on Windows, Linux and macOS and up to date with `develop`. Do exactly ONE coherent slice per iteration: claim it, build it, review it, test it, push it, record it, release the claim, exit. If this session was resumed, keep the context you have; do not redo a finished slice. The files below are the source of truth.
@@ -45,10 +45,11 @@ You are one iteration of a loop that keeps ShareX's `cross-platform` branch comp
 - ShareX and XerahS are different apps; never install one over the other. Do not change the desktop or compositor configuration.
 - Root goes through one `pkexec` (see the workspace AGENTS.md), never `sudo`.
 - Do not drive GUI automation on Mike's live desktop while he uses it.
-- Anything that needs a real Mac, Apple credentials, a release decision or a new dependency goes under `## Blocked on Mike` with the exact question.
+- **Open questions are decided, never waited on.** Product behaviour, defaults, architecture, platform-service design and new dependencies on `cross-platform` are the maintainer's calls, delegated to this loop. Research online first: how `develop` and ShareX on Windows behave, the leading comparable apps on that platform (Flameshot, Spectacle, GNOME Screenshot, CleanShot X, macOS Screenshot), and the platform's own docs. Cite at least two sources. Choose the option that best matches Windows ShareX and is reversible and free. For a dependency, verify its licence (GPL-3.0-compatible) on its official page and prefer packages the platform already ships; reject anything else outright and choose another. Log the decision to `decisions.tsv` with the sources, mention it in the commit body, then build it.
+- **Mike only** (these happen in his name or need his hands): publishing releases, Apple or other signing/notarisation credentials, anything that costs money, legal questions, his accounts, and running a test on a real Mac. List them under `## Mike only` in `STATE.md` and keep building around them: write or update the real-Mac test procedure in `docs/<yyyymmdd>-macos-*.md` so Mike can run it, use unsigned builds, cover the code with tests that run on Linux, and move on to the next slice.
 
-## Stop condition
-If `## Backlog` holds only blocked items or items needing a live desktop or a Mac, write `## Loop status: waiting on Mike` at the top of `STATE.md` with the list, make no code changes, and exit.
+## The loop does not stop
+There is always a next slice: merge `develop`, decide the top open question (above), fix a report finding, raise test coverage, move remaining Windows-only code behind `ShareX.Platform`, or prepare a real-Mac test procedure for Mike. Never write a "waiting on Mike" status and never exit without a slice.
 ````
 
 # Notes
