@@ -99,6 +99,7 @@ Rules:
 | [AI breaking news lane](team-config/ai-breaking-news-lane.md) | Source of the standing news-watch cron job |
 | [Claude Code model team, Fable advisor](team-config/claude-code-fable-advisor-setup.md) | Set up Fable advisor, Sonnet main, Haiku subagents and an Opus reviewer at user level on any machine |
 | [Claude Code model team, Opus advisor](team-config/claude-code-opus-advisor-setup.md) | Same team with Opus as advisor: no Fable access, no usage-credits billing, or lower cost. Reviewer takes the done-check so Opus isn't paid twice |
+| [Antigravity swarm, Argon coordinates, Hydrogen builds, Neon reviews](team-config/antigravity-swarm-argon-neon-hydrogen.md) | Team charter for Antigravity's `/swarm`: Gemini 4 Argon as coordinator, Hydrogen workers, a Neon verifier. The Antigravity counterpart of the Claude Code model team |
 
 ### finance
 | Prompt | Use when |
