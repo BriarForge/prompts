@@ -45,6 +45,8 @@ Add a Gemini 4 Neon lane to this Claude Code setup at the USER level, using the 
 - The agy sandbox has no network and allows the workspace and temp dirs only. Rust builds worked with `read_file(~/.cargo)`, `read_file(~/.rustup)` and `write_file(~/.cargo/.package-cache)`, using `cargo ... --offline`.
 - `--output-format json` returns `conversation_id`, `status`, `response`, `structured_output` (with `--json-schema FILE`), `denied_actions`, `usage` and `duration_seconds`. `--conversation ID` resumes an earlier run, so a fix round does not need the brief again.
 - A read-only reviewer must be told not to run cargo or any build: the first command outside the allow list ends its run.
+- `git -C <path> ...` never matches a `command(git status)` style rule, and it would also slip past a `command(git push)` deny rule (`git -C . push`). Allow no `git -C`; put `git -C`, `git --git-dir` and `git --work-tree` on the deny list. A denied command only blocks (agy then retries without it), while an unlisted one aborts the run, so deny the commands you expect it to try but do not want to allow. Also tell agy in the prompt to run git plainly in the current directory and not to chain commands with `&&`.
+- When parsing `git status --porcelain`, do not strip the output as a whole: the first line starts with a space and losing it cuts a character off the first path (this made the git guard report a false violation once).
 
 ## 3. Create the files
 Create ~/.claude/agy/ and write these files (mode 600 for the JSON, 755 for agy-run).
@@ -111,7 +113,10 @@ Create ~/.claude/agy/ and write these files (mode 600 for the JSON, 755 for agy-
       "command(sudo)",
       "command(pkexec)",
       "command(curl)",
-      "command(wget)"
+      "command(wget)",
+      "command(git -C)",
+      "command(git --git-dir)",
+      "command(git --work-tree)"
     ]
   }
 }
@@ -169,7 +174,10 @@ Create ~/.claude/agy/ and write these files (mode 600 for the JSON, 755 for agy-
       "command(sudo)",
       "command(pkexec)",
       "command(curl)",
-      "command(wget)"
+      "command(wget)",
+      "command(git -C)",
+      "command(git --git-dir)",
+      "command(git --work-tree)"
     ]
   }
 }
@@ -279,14 +287,15 @@ def out(env, code):
     sys.exit(code)
 
 
-def git(cwd, *a):
+def git(cwd, *a, raw=False):
     r = subprocess.run(['git', '-C', cwd, *a], capture_output=True, text=True)
-    return r.stdout.strip() if r.returncode == 0 else ''
+    if r.returncode != 0: return ''
+    return r.stdout if raw else r.stdout.strip()
 
 
 def git_state(cwd):
     return {'head': git(cwd, 'rev-parse', 'HEAD'), 'branch': git(cwd, 'branch', '--show-current'),
-            'changed': sorted(l[3:].split(' -> ')[-1] for l in git(cwd, 'status', '--porcelain').splitlines())}
+            'changed': sorted(l[3:].split(' -> ')[-1] for l in git(cwd, 'status', '--porcelain', raw=True).splitlines() if len(l) > 3)}
 
 
 def main():
@@ -329,8 +338,8 @@ def main():
     json.dump(settings, tmp); tmp.close(); os.chmod(tmp.name, 0o600)
 
     rules = {
-        'build': 'You edit files. Edit only the files the brief says you own. You may run only the allowed build and test commands (cargo with --offline). Never commit, push, switch branches or create worktrees. Finish with the required structured report.',
-        'review': 'You are read-only: do NOT run cargo or any build or test command; use git show, git diff, grep and cat only. Report findings in the required structure, most severe first, each with a concrete failing scenario; say which you verified.',
+        'build': 'Run git commands plainly in the current directory (no git -C, no chaining with &&). You edit files. Edit only the files the brief says you own. You may run only the allowed build and test commands (cargo with --offline). Never commit, push, switch branches or create worktrees. Finish with the required structured report.',
+        'review': 'Run git commands plainly in the current directory (no git -C, no chaining with &&). You are read-only: do NOT run cargo or any build or test command; use git show, git diff, grep and cat only. Report findings in the required structure, most severe first, each with a concrete failing scenario; say which you verified.',
         'ask': 'You are read-only. Answer from the files; do not run build or test commands.',
     }[a.mode]
     prompt = f'Read the brief at {brief} and do what it describes. {rules}'
@@ -476,6 +485,7 @@ List: agy version, the Neon model chosen and the result of the `ok` call, each f
 # Notes
 
 - **Checked on this machine (25 Nov 2026, agy 1.5.16):** `agy-run doctor`; a clean build (exit 0); a build that created an extra file (exit 5, file left in place); a `curl` blocked by a deny rule while the run carried on; `cargo check` and `cargo test` run by agy inside its sandbox with the allow rules above; a read-only structured review of a real commit (about four minutes, 90,000 tokens); `--conversation` resume; `write_file(*)` denied in the read-only profile.
+- **First real use (25 Nov 2026):** a small ShareX-Rust bug (the Image resizer spinner buttons, issue 288) was built by `agy-run build` in 110 seconds (66,000 tokens), its own tests passed, the diff matched the brief, and a Neon review of it came back clean in about three minutes. The run found the two profile and parsing problems described in section 2.
 - **Not verified:** how agy behaves at quota exhaustion (the wrapper maps auth, quota and model errors to exit code 3 by matching the message, which is untested), a large multi-file build, `--effort`, and how `--settings` combines with an existing `permissions` block in `~/.gemini/antigravity-cli/settings.json` (there was none here).
 - **Neon is a first-pass reviewer.** Its findings need a spot check (it once flagged an intentional design choice as a weakening). Keep the Opus `reviewer` for security, auth, migrations, public API and anything irreversible.
 - **Why the wrapper agents are Haiku:** they only run `agy-run`, read the JSON envelope and check `git status`. Neon writes or reviews the code.
